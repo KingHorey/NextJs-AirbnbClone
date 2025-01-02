@@ -155,11 +155,11 @@ class Town(BaseClass):
 
 
 class Address(models.Model):
-    street = models.CharField(max_length=255, blank=True)
-    town = models.ForeignKey(Town, on_delete=models.CASCADE, related_name='addresses')
-    postal_code = models.CharField(max_length=20, blank=True)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+	street = models.CharField(max_length=255, blank=True)
+	town = models.ForeignKey(Town, on_delete=models.CASCADE, related_name='addresses')
+	postal_code = models.CharField(max_length=20, blank=True)
+	latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+	longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.street}, {self.town.name}" if self.street else self.town.name
+	def __str__(self):
+		return f"{self.street}, {self.town.name}" if self.street else self.town.name

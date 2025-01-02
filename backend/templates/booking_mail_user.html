@@ -1,0 +1,27 @@
+<!-- templates/booking_confirmation_email.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Confirmation</title>
+</head>
+<body>
+    <h1>Booking Confirmation</h1>
+
+    <p>Dear {{ first_name }} {{ last_name }},</p>
+
+    <p>Your booking for <strong>{{ property_name }}</strong> has been
+        successfully confirmed.</p>
+
+    <p>Details:</p>
+    <ul>
+        <li><strong>Start Date:</strong> {{ start_date }}</li>
+        <li><strong>End Date:</strong> {{ end_date }}</li>
+        <li><strong>Number of Guests:</strong> {{ number_of_guests
+            }}</li>
+        <li><strong>Price:</strong> {{ price_per_night }} per night</li>
+    </ul>
+    <p>If you made a mistake with this booking: please click here to cancel
+    <a href="#">Cancel</a></p>
+    <p>Thank you for booking with us!</p>
+</body>
+</html>
