@@ -22,4 +22,4 @@ class Notification(models.Model):
             models.Index(fields=['is_read']),
         ]
         ordering = ["-created_at"]
-        unique_together = ['user', 'title']
+        unique_together = ('user', 'title')

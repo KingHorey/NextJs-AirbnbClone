@@ -45,6 +45,13 @@ class Properties(models.Model):
 			return self.price_per_night * (1 - self.discount / 100)
 		return self.price_per_night
 
+	# @property.setter
+	# def image(self, value):
+	# 	self._image = value
+
+	# @image
+	# def image(self):
+	# 	return
 
 	class Meta:
 		verbose_name = "property"
