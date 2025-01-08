@@ -96,7 +96,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 		Custom Django model class representing a user in the DB
 
 	"""
-
 	id = models.UUIDField(default=uuid4, editable=False, primary_key=True, null=False)
 	email = models.EmailField(unique=True, blank=True)
 	first_name= models.CharField(max_length=30, null=False, blank=True)

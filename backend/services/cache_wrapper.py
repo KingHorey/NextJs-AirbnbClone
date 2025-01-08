@@ -5,14 +5,16 @@ from django.core.cache import cache
 
 class CacheWrapper:
 
-	def get(self, address: str) -> Optional[Any]:
+	@staticmethod
+	def get(address: str) -> Optional[Any]:
 		""" member function to retrieve the cache key """
 		result = cache.get(address)
 		return result if result else None
 
-	def set(self, key: str, value, timeout: int = 3600) -> None:
+	@staticmethod
+	def set(key: str, value, timeout: int = 3600) -> None:
 		"""
-			set the address as a key in the cache
+			set the value in the cache
 
 			args:
 			- key: key to the cache result
@@ -23,3 +25,8 @@ class CacheWrapper:
 			raise TypeError("Key should be a string")
 		key = key.strip().lower()
 		cache.set(key, value, timeout)
+
+	@staticmethod
+	def delete(key:str) -> None:
+		""" delete an entry from the cache """
+		cache.delete(key)

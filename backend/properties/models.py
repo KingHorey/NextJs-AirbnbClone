@@ -23,6 +23,7 @@ class Properties(models.Model):
 	max_guests = models.IntegerField(default=5, null=False)
 	bathrooms = models.IntegerField(null=False)
 	bedrooms = models.IntegerField(null=False)
+	categories = models.CharField(max_length=25, null=False)
 	beds = models.IntegerField(null=False)
 	pets_allowed = models.BooleanField(default=False)
 	parking_space = models.BooleanField(default=False)
