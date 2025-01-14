@@ -1,10 +1,15 @@
 from django.urls import path
 
-from favorites.views import FavoriteView, FavoriteAction
+from favorites.views import FavoriteView, FavoriteAction, GetUserFavoritesView
 
 urlpatterns = [
-    path("/create", FavoriteView.as_view(), name="create and list property "
+    path("create/<uuid:id>", FavoriteView.as_view(), name="create and list "
+                                                     "property "
                                                  "to fav"),
-    path("/actions", FavoriteAction.as_view(), name="delete a property from "
-                                                    "favorite")
+    path("actions/<uuid:id>", FavoriteAction.as_view(), name="delete a "
+                                                            "property "
+                                                       "from "
+                                                    "favorite"),
+    path("all-properties/<uuid:id>", GetUserFavoritesView.as_view(),
+         name="Get all a users favorite")
 ]

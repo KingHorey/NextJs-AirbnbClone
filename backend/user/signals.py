@@ -18,6 +18,5 @@ def send_welcome_verification_mail(sender, instance, created, **kwargs) -> \
         logger.info("No instance created")
         return
     if created and instance:
-        print("Instance id: ", instance.id)
         logger.info("Instance Info: ", instance.id)
         send_welcome_mail.apply_async(args=[str(instance.id)])

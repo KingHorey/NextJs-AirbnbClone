@@ -10,11 +10,13 @@ from user.serializers import UserSerializer
 
 
 class PropertiesListSerializer(serializers.ModelSerializer):
+	""" class to show the properties as a summary, ideal for the homepage or search results """
+	address = AddressSerializer()
 	rating = serializers.SerializerMethodField()
 
 	class Meta:
 		model = Properties
-		fields = ["id", "location", "price_per_night", "rating"]
+		fields = ["id", "address", "price_per_night", "rating"]
 
 	def get_rating(self, obj: 'Properties') -> int:
 		"""
@@ -61,6 +63,6 @@ class PropertyDetailSerializer(serializers.ModelSerializer):
 	def to_representation(self, instance):
 		""" customize the output that is to be sent as a response """
 		representation = super().to_representation(instance)
-		discounted_price = instance.discounted_price()
+		discounted_price = instance.discounted_price
 		representation['discounted_price'] = discounted_price
 		return representation

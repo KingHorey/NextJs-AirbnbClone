@@ -27,7 +27,7 @@ class GetAllProperties(ListAPIView):
 		cache_hit = cache.get(key)
 		if cache_hit:
 			return Response({'data': cache_hit}, status=status.HTTP_200_OK)
-		data = self.get_queryset().filter(category__iexact=params.lower())
+		data = self.get_queryset().filter(categories__iexact=params.lower())
 		if data:
 			serializer = self.get_serializer(data, many=True)
 			cache.set(f"{params}_{page}", serializer.data)
@@ -37,6 +37,26 @@ class GetAllProperties(ListAPIView):
 		else:
 			return Response({
 				'data': 'No instance',
+			}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ViewListingsInStateView(ListAPIView):
+	""" list all the properties in a state """
+	serializer_class = PropertiesListSerializer
+	queryset = Properties.objects.all()
+
+	def list(self, request, *args, **kwargs):
+		""" method to return a response baseed on query received """
+		town_name = kwargs.get('town', None)
+		if town_name is None:
+			return Response({
+				'data': 'Please provide a state'
+			}, status=status.HTTP_400_BAD_REQUEST)
+		query = request.query_params
+		state_name = query.get('state', None)
+		if state_name is None:
+			return Response({
+				'data': 'Please provide a country'
 			}, status=status.HTTP_400_BAD_REQUEST)
 
 

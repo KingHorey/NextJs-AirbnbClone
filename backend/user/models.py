@@ -129,6 +129,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 		""" assigns an image to the user """
 		self._image = image
 
+	@property
+	def get_full_name(self):
+		return f"{self.first_name} {self.last_name}"
+
 
 	def __str__(self) -> str:
 		""" string representation that returns the user email"""

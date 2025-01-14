@@ -22,7 +22,7 @@ class CreateReview(CreateAPIView):
     serializer_class = ReviewSerializer
 
     def create(self, request, *args, **kwargs):
-        """ create a reivew for a property """
+        """ create a review for a property """
         data = request.data.copy()
         data['user'] = request.user.id
         property_id = data.get('property', None)

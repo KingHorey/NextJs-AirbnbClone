@@ -1,6 +1,7 @@
 from uuid import uuid4
 from typing import List
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 
@@ -12,7 +13,8 @@ class BaseClass(models.Model):
 	""" absract class that other models in module will inherit from """
 	id = models.UUIDField(default=uuid4, primary_key=True, null=False,
 						  editable=False, unique=True)
-	name = models.CharField(max_length=100, unique=True, blank=False, null=False)
+	name = models.CharField(max_length=400, unique=True, blank=False,
+							null=False)
 	slug = models.SlugField(unique=True, blank=True, null=True)
 	latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 	longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
@@ -26,8 +28,11 @@ class BaseClass(models.Model):
 # Create your models here.
 class Country(BaseClass):
 	""" django model class representing a country table in DB """
+	name = models.CharField(max_length=400, blank=False,
+							null=False)
+	slug = models.SlugField(unique=False, blank=True, null=True)
 	continent = models.ForeignKey('Continent', related_name='countries', on_delete=models.CASCADE)
-	dialing_code = models.CharField(max_length=7, unique=True, null=False)
+	dialing_code = models.CharField(max_length=7, null=False)
 
 	def __str__(self) -> str:
 		"""
@@ -46,17 +51,16 @@ class Country(BaseClass):
 		verbose_name = "country"
 		verbose_name_plural = "countries"
 		ordering = ["name"]
+		unique_together = ["name", "dialing_code", "continent"]
 
 	def save(self, *args, **kwargs) -> None:
-		if not self.id:
+		if not self.slug:
+			# check_if_slug_exists
+			self.slug = slugify(str(self.name).lower().replace(" ", "-"))
+		try:
 			super().save(*args, **kwargs)
-		location = LocationMapper()
-		task_id = location.get_long_lat.apply_async((self.name), kwargs={
-			"model": "Country", "object_id": self.id})
-		self.task_id = task_id
-		self.slug = slugify(self.name) if not self.slug else self.slug
-		super().save(*args, **kwargs)
-
+		except ValidationError:
+			self.slug = f"{self.slug}_{self.continent.name}"
 
 
 class Continent(BaseClass):
@@ -85,7 +89,6 @@ class Continent(BaseClass):
 		super().save(*args, **kwargs)
 
 
-
 class State(BaseClass):
 	"""
 		state model for representing a table in the DB
@@ -95,11 +98,13 @@ class State(BaseClass):
 			- name
 
 		relationships:
-			country - One to many relationship with Country
+			country - One-to-many relationship with Country
 
 		member_functions:
 			__str__
 	"""
+	name = models.CharField(max_length=400, blank=False,
+							null=False)
 	country = models.ForeignKey(Country, related_name='states', on_delete=models.CASCADE, null=True)
 
 	def __str__(self) -> str:
@@ -113,16 +118,9 @@ class State(BaseClass):
 		unique_together = ('name', 'country')
 
 	def save(self, *args, **kwargs) -> None:
-		if not self.id:
-			super().save(*args, **kwargs)
-		location = LocationMapper()
-		country_name = f"{self.name}, {self.country.name}"
-		task_id = location.get_long_lat.apply_async((country_name), kwargs={
-			"model": "State", "object_id": self.id})
-		self.task_id = task_id
-		self.slug = slugify(self.name) if not self.slug else self.slug
+		if not self.slug:
+			self.slug = slugify(str(self.name).lower().replace(" ", "-"))
 		super().save(*args, **kwargs)
-
 
 
 class Town(BaseClass):
@@ -135,6 +133,9 @@ class Town(BaseClass):
 	"""
 	state = models.ForeignKey(State, related_name='towns', on_delete=models.CASCADE)
 
+	def __str__(self):
+		return f"{self.name}, {self.state.name} State"
+
 	class Meta:
 		""" metadata class for town model """
 		verbose_name = "town"
@@ -142,24 +143,21 @@ class Town(BaseClass):
 		unique_together = ('name', 'state')
 
 	def save(self, *args, **kwargs) -> None:
-		if not self.id:
-			super().save(*args, **kwargs)
-		location = LocationMapper()
-		town_name = f"{self.name}, {self.state.name}"
-		task_id = location.get_long_lat.apply_async((town_name), kwargs={
-			"model": "Town", "object_id": self.id})
-		self.task_id = task_id
-		self.slug = slugify(self.name) if not self.slug else self.slug
+		if not self.slug:
+			self.slug = slugify(str(self.name).lower().replace(" ", "-"))
 		super().save(*args, **kwargs)
-
 
 
 class Address(models.Model):
 	street = models.CharField(max_length=255, blank=True)
-	town = models.ForeignKey(Town, on_delete=models.CASCADE, related_name='addresses')
+	town = models.ForeignKey(Town, on_delete=models.CASCADE,
+							 related_name='town_address')
 	postal_code = models.CharField(max_length=20, blank=True)
 	latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 	longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
 	def __str__(self):
 		return f"{self.street}, {self.town.name}" if self.street else self.town.name
+
+	class Meta:
+		verbose_name_plural = "Addresses"

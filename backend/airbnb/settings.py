@@ -57,7 +57,11 @@ INSTALLED_APPS = [
 	'user',
     'properties',
     'amenities',
+    'reviews',
+    'favorites',
+    'notifications',
     'location',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -92,7 +96,7 @@ EMAIL_HOST = config("MAIL_HOST")
 EMAIL_HOST_USER = config("MAIL_USER")
 EMAIL_HOST_PASSWORD = config("MAIL_PASSWORD")
 EMAIL_PORT = 587
-EMAIL_USE_TLS = False
+EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 300
 DEFAULT_FROM_EMAIL = config("MAIL_USER")
 

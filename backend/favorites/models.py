@@ -19,4 +19,7 @@ class Favorite(models.Model):
         verbose_name_plural = "Favorites"
 
     def __str__(self):
-        return f"{self.user} favorited {self.property}"
+        gender_type = self.user.get_gender_display()
+        prefix = "his" if gender_type == "Male" else "her"
+        return (f"{self.user.get_full_name} added {self.property} to {prefix} "
+                f"favorites")

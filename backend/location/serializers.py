@@ -6,15 +6,15 @@ from .models import State, Address, Town, Country, Continent
 class ContinentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Continent
-        fields = ["__all__"]
+        fields = "__all__"
 
 
 class CountrySerializer(serializers.ModelSerializer):
-    country = ContinentSerializer()
+    continent = ContinentSerializer()
 
     class Meta:
         model = Country
-        fields = ["__all__"]
+        fields = "__all__"
 
 
 class StateSerializer(serializers.ModelSerializer):
@@ -22,13 +22,13 @@ class StateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = State
-        fields = ["__all__"]
+        fields = "__all__"
 
 class TownSerializer(serializers.ModelSerializer):
     state = StateSerializer()
     class Meta:
         model = Town
-        fields =["__all__"]
+        fields = "__all__"
 
 class AddressSerializer(serializers.ModelSerializer):
     town = TownSerializer()

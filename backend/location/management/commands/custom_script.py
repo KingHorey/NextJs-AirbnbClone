@@ -6,6 +6,7 @@ from location.models import Continent
 
 continents = ["North America", "South America", "Africa", "Europe", "Asia",
               "Oceania", "Antarctica"]
+
 class Command(BaseCommand):
 
     def handle(self, *args, **options):

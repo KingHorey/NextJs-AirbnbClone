@@ -1,16 +1,17 @@
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, get_object_or_404, \
-    DestroyAPIView
+from rest_framework.generics import CreateAPIView, get_object_or_404, \
+    DestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from properties.models import Properties
 from .models import Favorite
+from user.models import User
 from .serializers import FavoriteSerializer
 
 
 # Create your views here.
-class FavoriteView(ListCreateAPIView):
+class FavoriteView(CreateAPIView):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
     permission_classes = [IsAuthenticated]
@@ -30,12 +31,37 @@ class FavoriteView(ListCreateAPIView):
                 'data': 'Property already in user favorites'
             }, status=status.HTTP_400_BAD_REQUEST)
         return Response({
-            'data': 'Property addded to favorites'
+            'data': 'Property added to favorites'
         }, status=status.HTTP_201_CREATED)
 
 
 class FavoriteAction(DestroyAPIView):
     queryset = Favorite.objects.all()
+    lookup_field = "id"
     serializer_class = FavoriteSerializer
     permission_classes = [IsAuthenticated]
+
+
+class GetUserFavoritesView(ListAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        """ get all a users favorites """
+        user_id = kwargs.get("id", None)
+        if user_id is None:
+            return Response({
+                "data": "Please provide a user id"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        user_instance = Favorite.objects.filter(user__id=user_id).exists()
+        if user_instance is None:
+            return Response({
+                "data": "User does not have any properties in favorites"
+            }, status=status.HTTP_404_NOT_FOUND)
+        favorites = Favorite.objects.filter(user__id=user_id)
+        serializer = self.get_serializer(favorites, many=True)
+        return Response({
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
 

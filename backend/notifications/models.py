@@ -10,7 +10,6 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     id_deleted = models.BooleanField(default=True)
 
-
     def __str__(self):
         return f"{str(self.content)[:10]} for {self.user}"
 
