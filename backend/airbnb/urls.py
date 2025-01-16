@@ -20,6 +20,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -44,5 +45,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/property/', include('properties.urls'), name="Properties API"),
     path('api/review/', include('reviews.urls'), name="reviews API"),
-    path("api/favorite/", include('favorites.urls'), name="favorites API")
+    path("api/favorite/", include('favorites.urls'), name="favorites API"),
+    path("api/token/", TokenObtainPairView.as_view(), name="login view"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="register "
+                                                                "view"),
+    path("api/user/", include("user.urls"), name="USERS API")
 ]

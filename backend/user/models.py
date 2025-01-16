@@ -71,7 +71,6 @@ class CustomUserManager(UserManager):
 	def create_superuser(self, email: str, password: Optional[str], **fields) -> 'User':
 		"""
 			public member function that fills user with admin attributes and returns an admin user
-
 			args:
 				- email: email addressed passed from serializer
 				- password: password passed from serializer

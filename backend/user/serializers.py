@@ -4,11 +4,26 @@ from reviews.models import Review
 from .models import User
 from reviews.serializers import ReviewSerializer
 
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = "__all__"
+        exclude = ["password"]
+
+
+class RegisterUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "gender", "email", "password",
+                  ]
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        email = validated_data.pop('email', None)
+        user = User.objects.create_user(email=email, password=password,
+                                        **validated_data)
+        return user
 
 
 class UserInfoSerializer(serializers.ModelSerializer):

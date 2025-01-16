@@ -1,6 +1,6 @@
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, CreateAPIView
 
-from user.serializers import UserSerializer
+from user.serializers import UserSerializer, RegisterUserSerializer
 from .models import User
 
 class GetUserInfoView(RetrieveAPIView):
@@ -8,3 +8,6 @@ class GetUserInfoView(RetrieveAPIView):
     lookup_field = 'id'
     serializer_class = UserSerializer
 
+class RegisterUserView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterUserSerializer
