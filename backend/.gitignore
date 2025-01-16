@@ -1,7 +1,7 @@
 .env
 *.pyc
-virtualenv/
-venv/
+virtualenv/**/
+venv/**
 db.sqlite3
 
 __pycache__/
