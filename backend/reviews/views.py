@@ -1,20 +1,13 @@
 from typing import Optional
-
-from django.shortcuts import render
-
 from rest_framework.generics import CreateAPIView, get_object_or_404, \
     RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
-
 from .models import Review
 from properties.models import Properties
-
 from .serializers import ReviewSerializer
 
-
-# Create your views here.
 
 class CreateReview(CreateAPIView):
     queryset = Review.objects.all()

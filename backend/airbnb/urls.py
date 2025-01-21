@@ -46,6 +46,7 @@ urlpatterns = [
     path('api/property/', include('properties.urls'), name="Properties API"),
     path('api/review/', include('reviews.urls'), name="reviews API"),
     path("api/favorite/", include('favorites.urls'), name="favorites API"),
+    path("api/booking/", include('booking.urls'), name="booking API"),
     path("api/token/", TokenObtainPairView.as_view(), name="login view"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="register "
                                                                 "view"),

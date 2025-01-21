@@ -1,14 +1,12 @@
 from uuid import uuid4
-
-
 from django.db import models
-
 from location.models import Address
 from amenities.models import Amenity
 from user.models import User
 
-# Create your models here.
+
 class Properties(models.Model):
+	BOOKING_TYPE = [('instant', 'INSTANT'), ('booking','BOOKING')]
 	id = models.UUIDField(default=uuid4, editable=False, primary_key=True)
 	name = models.CharField(null=False, blank=True, max_length=255, help_text="Enter the name of the property (e.g., 'Sunset Villa').")
 	address = models.OneToOneField(Address, related_name='property',
@@ -20,7 +18,7 @@ class Properties(models.Model):
 									   help_text="Select the amenities available for this property.")
 	price_per_night = models.DecimalField(decimal_places=2, max_digits=5,
 										  null=False)
-	max_guests = models.IntegerField(default=5, null=False)
+	max_guests = models.IntegerField(db_default=5, default=5, null=False)
 	bathrooms = models.IntegerField(null=False)
 	bedrooms = models.IntegerField(null=False)
 	categories = models.CharField(max_length=25, null=False)
@@ -31,11 +29,12 @@ class Properties(models.Model):
 								   null=True, blank=True,
 								   help_text="Discount as a percentage (e.g., 20 for 20%).")
 	host = models.ForeignKey(User, on_delete=models.CASCADE,
-							 related_name='properties')
+							 related_name='properties', help_text="The owner of the property")
 	cleaning_fee = models.DecimalField(null=True, blank=True, max_digits=5,
 									   decimal_places=2)
 	updated_at = models.DateTimeField(auto_now=True)
 	created_at = models.DateTimeField(auto_now_add=True)
+	booking_type = models.CharField(max_length=20, choices=BOOKING_TYPE, help_text="The type of booking that this property has", null=False, blank=False, default="instant", db_default="instant")
 
 	def __str__(self):
 		return self.name

@@ -1,4 +1,4 @@
-from celery import shared_task, chain
+from celery import shared_task
 from airbnb import logger
 
 from django.conf import settings

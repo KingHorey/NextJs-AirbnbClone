@@ -1,6 +1,6 @@
 from django.urls import path
 
-from amenities.views import AmenityListView, AmenityActionsView, AmenityUpdateView
+from .views import AmenityListView, AmenityActionsView, AmenityUpdateView
 
 urlpatterns = [
     path('all-amenities/', AmenityListView.as_view(), name="list all "

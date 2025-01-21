@@ -11,7 +11,7 @@ DEFAULT_FROM_EMAIL = config("MAIL_USER")
 
 def test_smtp_connection():
     try:
-        server = smtplib.SMTP(EMAIL_HOST, 587)
+        server = smtplib.SMTP(EMAIL_HOST, 465)
         server.starttls()
         server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
         print("Connection successful!")
