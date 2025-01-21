@@ -1,9 +1,10 @@
+from typing import Optional, Union
 from uuid import UUID
-from typing import Any
 
+from django.db.models import QuerySet
 from rest_framework.generics import ListCreateAPIView, \
     RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission
 
 from rest_framework.generics import get_object_or_404
 
@@ -12,10 +13,17 @@ from rest_framework.response import Response
 
 from .models import Booking
 from properties.models import Properties
-from .serializers import BookingSerializer
+from .serializers import BookingSerializer, PropertyOwnerBookingSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+
+class IsPropertyOwner(BasePermission):
+
+    def has_object_permission(self, request, view, obj) -> bool:
+        return obj.property.host == request.user
+
 
 class BookingView(ListCreateAPIView):
     """ view for handling views """
@@ -53,7 +61,12 @@ class BookingView(ListCreateAPIView):
                                              'property_instance':
                                                  property_instance})
         serializer.is_valid(raise_exception=True)
-        serializer.save(property=property_instance,
+        print(property_instance.booking_type)
+        if property_instance.booking_type == 'instant':
+            serializer.save(property=property_instance,
+                        guest=request.user, status='confirmed')
+        else:
+            serializer.save(property=property_instance,
                         guest=request.user)
         return Response({
             'data': "Property successfully booked"
@@ -66,35 +79,62 @@ class BookingView(ListCreateAPIView):
                                        guest=self.request.user).exists()
 
 
-
 class UpdateBookingView(RetrieveUpdateDestroyAPIView):
     """ view for retrieving, updating and deleting booking """
     lookup_field = 'id'
     serializer_class = BookingSerializer
 
-    def get_queryset(self) -> Response:
-        """ get"""
+    def get_object(self) -> Union[Response, QuerySet]:
         params = self.request.query_params
-        property_id = params.get('property', None)
-        if not property_id:
+        booking_id = params.get('q', None)
+        if not booking_id:
             return Response({
-                'data': "Provide a property"
+                'data': 'No booking provided'
             }, status=status.HTTP_400_BAD_REQUEST)
-        print(property_id)
-        return Booking.objects.get(id=property_id)
+        return get_object_or_404(Booking, id=booking_id)
 
-    def update(self, request, *args, **kwargs) -> Any:
+    def update(self, request, *args, **kwargs) -> Response:
         """ update property """
         request = self.request.data
-        booking_instance = self.get_queryset()
+        booking_instance = self.get_object()
         if booking_instance is None:
             return Response({
                 'data': 'No booking found'
             }, status=status.HTTP_404_NOT_FOUND)
-        serializer = self.get_serializer(data=request)
+        if (booking_instance.status == 'confirmed' or
+                booking_instance.status == 'completed'):
+            return Response({
+                'data': 'Booking has already been confirmed and '
+                        'cannot be edited'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(booking_instance,
+                                         data=request)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({
             'data': serializer.data
         }, status=status.HTTP_200_OK)
 
+
+class PropertyOwnerBookingView(RetrieveUpdateAPIView):
+    lookup_field = 'id'
+    serializer_class = PropertyOwnerBookingSerializer
+    permission_classes = [IsAuthenticated, IsPropertyOwner]
+    queryset = Booking.objects.all()
+
+    def update(self, request, *args, **kwargs) -> Response:
+        """ update a booking """
+        booking_instance = self.get_object()
+        if booking_instance.status in ['completed', 'rejected',
+                                       'confirmed']:
+            return Response({
+                'data': 'Cannot update a completed, confirmed or '
+                        'rejected booking'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(booking_instance,
+                                         data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)

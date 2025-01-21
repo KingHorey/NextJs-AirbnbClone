@@ -15,6 +15,7 @@ class Booking(models.Model):
     BOOKING_STATUS = [
         ('pending', 'Pending'),
         ('confirmed', 'Confirmed'),
+        ('rejected', 'Rejected'),
         ('cancelled', 'Cancelled'),
         ('completed', 'Completed')
     ]

@@ -2,8 +2,8 @@ from datetime import datetime, date
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
 from properties.serializers import PropertiesListSerializer
+
 from .models import Booking
 
 
@@ -48,3 +48,12 @@ class BookingSerializer(serializers.ModelSerializer):
         if isinstance(date, date):
             return
         return datetime.combine(date, datetime.min.time())
+
+
+
+class PropertyOwnerBookingSerializer(serializers.ModelSerializer):
+    """ serializer to handle property owner accepting a booking """
+
+    class Meta:
+        model = Booking
+        fields = "__all__"
