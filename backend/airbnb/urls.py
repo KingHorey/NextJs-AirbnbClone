@@ -22,17 +22,19 @@ from drf_yasg import openapi
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from properties.views import GetAllProperties
+
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
@@ -50,5 +52,7 @@ urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="login view"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="register "
                                                                 "view"),
-    path("api/user/", include("user.urls"), name="USERS API")
+    path("api/user/", include("user.urls"), name="USERS API"),
+    path("api/payment/", include("payment.urls"), name="PAYMENT API"),
+    path("", GetAllProperties.as_view(), name="get all properties"),
 ]

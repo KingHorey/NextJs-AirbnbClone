@@ -1,4 +1,4 @@
-#!/home/kinghorey/Library/Projects/nextJS/my-airbnb-clone/backend/virtualenv/bin/python3
+#!/home/kinghorey/Library/projects/personal/NextJs-AirbnbClone/backend/virtualenv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

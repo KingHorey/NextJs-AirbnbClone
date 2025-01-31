@@ -11,6 +11,7 @@ from django.db.models import Q
 
 User = get_user_model()
 
+
 class Booking(models.Model):
     BOOKING_STATUS = [
         ('pending', 'Pending'),
@@ -20,13 +21,17 @@ class Booking(models.Model):
         ('completed', 'Completed')
     ]
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
-    property = models.ForeignKey('properties.Properties', on_delete=models.CASCADE)
-    status = models.CharField(max_length=50, choices=BOOKING_STATUS, default='pending')
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    property = models.ForeignKey(
+        'properties.Properties', on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=50, choices=BOOKING_STATUS, default='pending')
+    total_price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00)
     start_date = models.DateField()
     end_date = models.DateField()
     number_of_guests = models.IntegerField(null=False)
     guest = models.ForeignKey(User, on_delete=models.CASCADE)
+    # is_deleted = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs) -> Any:
         """ custom method to adjust booking save method """
@@ -79,7 +84,6 @@ class Booking(models.Model):
             start_date__lt=self.end_date,
             end_date__gt=self.start_date
         ).exists()
-
 
     def __str__(self) -> str:
         return f"{self.property.name} booking for {self.guest}"
