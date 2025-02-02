@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Payment Pending</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #ff9800;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+      }
+      .content {
+        margin-top: 20px;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #777;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Payment Pending</h1>
+      </div>
+      <div class="content">
+        <p>Dear {{ full_name }},</p>
+        <p>
+          Your payment of NGN {{ amount }} for your booking at
+          <strong>{{ property_name }}</strong> is currently pending.
+        </p>
+        <p>Please complete the payment process to confirm your booking.</p>
+      </div>
+      <div class="footer">
+        <p>If you have any questions, please contact our support team.</p>
+        <p>Airbnb &copy; 2025</p>
+      </div>
+    </div>
+  </body>
+</html>

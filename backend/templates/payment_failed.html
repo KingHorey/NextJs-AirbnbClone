@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Payment Failed</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #f44336;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+      }
+      .content {
+        margin-top: 20px;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #777;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Payment Failed</h1>
+      </div>
+      <div class="content">
+        <p>Dear {{ full_name }},</p>
+        <p>
+          We regret to inform you that your payment of NGN {{ amount }} for your
+          booking at <strong>{{ property_name }}</strong> has failed.
+        </p>
+        <p>
+          Please try again or contact our support team if you need assistance.
+        </p>
+      </div>
+      <div class="footer">
+        <p>Airbnb &copy; 2025</p>
+      </div>
+    </div>
+  </body>
+</html>

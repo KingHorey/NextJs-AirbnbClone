@@ -1,12 +1,13 @@
 from celery import shared_task
 from airbnb import logger
 
-from django.conf import settings
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
+from services.mail_send import mail_service
 
-from user.models import User
+from django.contrib.auth import get_user_model
+
 from notifications.models import Notification
+
+User = get_user_model()
 
 
 @shared_task(bind=True, max_retries=5)
@@ -17,15 +18,12 @@ def send_review_mail(self, mail: str, **kwargs) -> None:
     """
     recipient = mail
     property_name = kwargs.get('property')
-    sender = settings.DEFAULT_FROM_EMAIL
 
     try:
-        content = render_to_string('review_made.html', context={
+        content = {
             'property_name': property_name
-        })
-        send_mail('Review made', 'Review Made', sender,
-                  auth_password=settings.EMAIL_HOST_PASSWORD,
-                  html_message=content, recipient_list=[recipient])
+        }
+        mail_service.mail_send('Review Made', content, recipient=recipient, template_name='review_made.html')
     except Exception as exc:
         self.retry(exc=exc, countdown=5)
 

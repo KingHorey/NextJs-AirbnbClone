@@ -12,6 +12,7 @@ class Notification(models.Model):
         ("payment_received", "Payment Received"),
         ("payment_success", "Payment Success"),
         ("payment_failed", "Payment Failed"),
+        ("payment_pending", "Payment Pending"),
         ("amenity_added", "Amenity Added"),
         ("general", "General")
     ]

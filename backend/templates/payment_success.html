@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Payment Successful</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+      }
+      .content {
+        margin-top: 20px;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #777;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Payment Successful</h1>
+      </div>
+      <div class="content">
+        {% if role == "guest" %}
+        <p>Dear {{ full_name }},</p>
+        <p>
+          Your payment of NGN {{ amount }} for your booking at
+          <strong>{{ property_name }}</strong> has been successfully processed.
+        </p>
+        <p>Your booking is now confirmed. Thank you for choosing Airbnb!</p>
+        {% elif role == "host" %}
+        <p>Dear {{ full_name }},</p>
+        <p>
+          A payment of NGN {{ amount }} has been received for a booking on your
+          property <strong>{{ property_name }}</strong>.
+        </p>
+        <p>Please check your account dashboard for further details.</p>
+        {% endif %}
+      </div>
+      <div class="footer">
+        <p>If you have any questions, please contact our support team.</p>
+        <p>Airbnb &copy; 2025</p>
+      </div>
+    </div>
+  </body>
+</html>
