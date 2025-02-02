@@ -56,4 +56,4 @@ class PropertyOwnerBookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = "__all__"
+        fields = ["status"]

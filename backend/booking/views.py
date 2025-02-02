@@ -61,7 +61,6 @@ class BookingView(ListCreateAPIView):
                                              'property_instance':
                                                  property_instance})
         serializer.is_valid(raise_exception=True)
-        print(property_instance.booking_type)
         if property_instance.booking_type == 'instant':
             serializer.save(property=property_instance,
                         guest=request.user, status='confirmed')

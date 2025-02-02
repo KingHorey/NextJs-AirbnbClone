@@ -4,7 +4,7 @@ from .models import Booking
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = ["property", "full_name", "email", "start_date",
-                    "end_date", "status"]
+                    "end_date", "status", "id"]
 
     def full_name(self, obj):
         return obj.guest.get_full_name

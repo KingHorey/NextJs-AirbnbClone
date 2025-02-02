@@ -2,8 +2,9 @@ import random
 import string
 import hmac
 import hashlib
+from datetime import datetime
 
-from typing import Any, Tuple, Union
+from typing import Any, Tuple
 
 from rest_framework.generics import CreateAPIView, get_object_or_404, UpdateAPIView
 from rest_framework import status
@@ -123,6 +124,7 @@ class PaymentWebhookView(UpdateAPIView):
         serializer = self.get_serializer(
             payment_instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
+        serializer.validated_data['paid_at'] = datetime.now().isoformat()
         serializer.save()
         return Response({
             'data': serializer.data

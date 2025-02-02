@@ -5,8 +5,6 @@ from django.db.models.signals import pre_save, post_save
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-
-
 import logging
 
 from .models import Notification
@@ -27,9 +25,9 @@ notification_content = {
 }
 
 @receiver(post_save, sender=Notification)
-def send_notification_to_socket(sender, created, instance, **kwargs) -> None:
+def send_notification_to_socket(sender, instance, **kwargs) -> None:
     channel = get_channel_layer()
-    if created and instance:
+    if instance:
         user_id = instance.user.id # get the id of the owner
         message = notification_content.get(str(instance.notification_category).lower())
         logger.info(message)

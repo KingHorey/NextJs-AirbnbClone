@@ -32,7 +32,7 @@ class Payment(models.Model):
     amount = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    paid_at = models.DateTimeField(auto_now=True)
+    paid_at = models.DateTimeField(null=True)
     currency = models.CharField(max_length=3, default='NGN')
     channel = models.CharField(max_length=50, default='card')
     payment_provider = models.CharField(max_length=50, default='paystack')
@@ -44,4 +44,6 @@ class Payment(models.Model):
             fields=['payment_reference', 'status']
         )]
         ordering = ['-created_at']
-        # order_with_respect_to = 'user'
+
+    def __str__(self):
+        return f"Payment of {self.amount} for {self.booking.property.name} by {self.user.get_full_name}"
