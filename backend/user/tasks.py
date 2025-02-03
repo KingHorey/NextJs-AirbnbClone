@@ -34,6 +34,9 @@ def send_welcome_mail(self, user_id: str) -> Optional[str]:
         user = get_user(user_id)
         if user is None:
             return "No user ID provided"
+        email_notification = user.preferences.email_notifications
+        if not email_notification:
+            return "User has disabled email notifications"
         subject = "Welcome to AirBnb"
         content =  {
             'email': user.email,
@@ -59,6 +62,9 @@ def send_login_mail(user_id: str) -> None:
         user = get_user(user_id)
         if user is None:
             return "No user id provided"
+        email_notification = user.preferences.email_notifications
+        if not email_notification:
+            return "User has disabled email notifications"
         subject = "New Login"
         content =  {
             'email': user.email,

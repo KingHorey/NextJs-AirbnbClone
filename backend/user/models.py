@@ -8,6 +8,9 @@ from django.contrib.auth.models import User, UserManager, AbstractBaseUser, Perm
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.phonenumber import PhoneNumber
 
+
+from django.utils.translation import gettext_lazy as _
+
 # Create your models here.
 
 
@@ -143,3 +146,29 @@ class User(AbstractBaseUser, PermissionsMixin):
         """ metadata class"""
         verbose_name = "user"
         verbose_name_plural = "users"
+
+
+
+class BankingDetails(models.Model):
+    """_summary_
+
+    Args:
+        models (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid4)
+    bank_name = models.CharField(max_length=30, null=False)
+    account_number = models.IntegerField(null=False, blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='banking_details')
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.bank_name} for {self.user.email}"
+
+    class Meta:
+        order_with_respect_to = "user"
+        verbose_name = "Bank Detail"
+        verbose_name_plural = "Bank Details"
+

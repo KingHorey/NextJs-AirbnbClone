@@ -16,9 +16,40 @@ from datetime import timedelta
 import os
 
 from django.conf.global_settings import EMAIL_TIMEOUT
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+LANGUAGE_CODE = 'en'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('fr', _('French')),
+    ('es', _('Spanish')),
+    ('de', _('German')),
+    ('it', _('Italian')),
+    ('zh', _('Chinese')),
+    ('ja', _('Japanese')),
+    ('hi', _('Hindi')),
+    ('ru', _('Russian')),
+    ('ar', _('Arabic')),
+]
+
+CURRENCIES = [
+    ('USD', _('US Dollar')),
+    ('EUR', _('Euro')),
+    ('NGN', _('Naira'))
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 
 # Quick-start development settings - unsuitable for production
@@ -73,6 +104,7 @@ INSTALLED_APPS = [
     'booking',
     'location',
     'payment',
+    'user_preferences',
     'drf_yasg'
 ]
 
@@ -87,7 +119,7 @@ SWAGGER_SETTINGS = {
 }
 
 MIDDLEWARE = [
-
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

@@ -1,82 +1,79 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Airbnb</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #484848;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            padding: 20px 0;
-        }
-        .button {
-            display: inline-block;
-            background-color: #FF5A5F;
-            color: white !important;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-            font-size: 14px;
-            color: #767676;
-        }
-        .next-steps {
-            background-color: #F8F8F8;
-            padding: 20px;
-            border-radius: 4px;
-            margin: 20px 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <!-- Add your Airbnb clone logo here -->
-            <h1 style="color: #FF5A5F;">Welcome to Airbnb</h1>
+
+    <head>
+        <title>Welcome to Airbnb</title>
+        <style type="text/css">
+            @media screen {
+                .email-container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    border-radius: 15px;
+                    overflow: hidden;
+                }
+            }
+
+            p,
+            li,
+            h1,
+            h2 {
+                color: #000000 !important;
+            }
+
+            .next-steps {
+                background-color: #f8f8f8;
+                padding: 20px;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+
+    <body style="margin: 0; padding: 20px; background-color: #ffffff; font-family: Arial, sans-serif;">
+        <div class="email-container"
+             style="background: #ffffff; border-radius: 15px; padding: 30px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 1px solid #02020296;">
+            <!-- Responsive Logo -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"
+                 alt="Airbnb Logo"
+                 style="display: block; max-width: 200px; width: 100%; height: auto; margin: 0 auto 25px auto;">
+            <h1 style="text-align: center; color: #333333; margin-top: 0;">Welcome to Airbnb</h1>
+
+            <p>Hi {{first_name}},</p>
+            <p>Thank you for joining Airbnb! I'm thrilled to welcome you to this platform I've built to connect
+                travelers with unique homes and amazing hosts worldwide.</p>
+            <p>To get started and ensure your account's security, please verify your email address:</p>
+
+            <a href="{{verificationLink}}" class="button"
+               style="display: block; width: fit-content; color: #ffffff; background-color: #FF5C61; padding: 10px; border-radius: 10px; margin: 20px auto; text-decoration: none; font-weight: bold;">Verify
+                Email Address</a>
+
+            <p style="font-size: 14px; color: #767676; text-align: center;">This link will expire in 24 hours for
+                security purposes.</p>
+
+            <div class="next-steps">
+                <h2 style="color: #484848;">What's next?</h2>
+                <ul>
+                    <li>Complete your profile to help hosts get to know you better</li>
+                    <li>Browse through our curated collection of homes</li>
+                    <li>Save your favorite listings for future reference</li>
+                    <li>Reach out to hosts and start planning your first stay</li>
+                </ul>
+            </div>
+
+            <p>As this is a personal project I'm passionate about, I'd love to hear your thoughts as you explore the
+                platform. If you have any questions or suggestions, feel free to reply to this email – I read every
+                message personally.</p>
+            <p>Happy exploring!</p>
+            <p>Best wishes,<br>
+                John<br>
+                Founder, Airbnb</p>
+
+            <div class="footer" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                <p style="color: #767676; font-size: 14px; margin-bottom: 10px;">This email was sent to {{email}}</p>
+                <p style="color: #767676; font-size: 14px;">If you didn't create this account, please ignore this email
+                    or let us know by replying to this message.</p>
+            </div>
         </div>
-        <p>Hi {{first_name}},</p>
-        <p>Thank you for joining Airbnb! I'm thrilled to welcome you to this platform I've built to connect travelers with unique homes and amazing hosts worldwide.</p>
-        <p>To get started and ensure your account's security, please verify your email address:</p>
-        <center>
-            <a href="{{verificationLink}}" class="button">Verify Email Address</a>
-        </center>
-        <p style="font-size: 14px; color: #767676;">This link will expire in 24 hours for security purposes.</p>
-        <div class="next-steps">
-            <h2 style="color: #484848;">What's next?</h2>
-            <ul>
-                <li>Complete your profile to help hosts get to know you better</li>
-                <li>Browse through our curated collection of homes</li>
-                <li>Save your favorite listings for future reference</li>
-                <li>Reach out to hosts and start planning your first stay</li>
-            </ul>
-        </div>
-        <p>As this is a personal project I'm passionate about, I'd love to hear your thoughts as you explore the platform. If you have any questions or suggestions, feel free to reply to this email – I read every message personally.</p>
-        <p>Happy exploring!</p>
-        <p>Best wishes,<br>
-        John<br>
-        Founder, Airbnb</p>
-        <div class="footer">
-            <p style="margin-bottom: 10px;">This email was sent to
-                {{email}}</p>
-            <p>If you didn't create this account, please ignore this email or let us know by replying to this message.</p>
-        </div>
-    </div>
-</body>
+    </body>
+
 </html>

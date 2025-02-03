@@ -54,5 +54,7 @@ urlpatterns = [
                                                                 "view"),
     path("api/user/", include("user.urls"), name="USERS API"),
     path("api/payment/", include("payment.urls"), name="PAYMENT API"),
+    path("api/user-preferences/", include("user_preferences.urls"),
+         name="USER PREFERENCES API"),
     path("", GetAllProperties.as_view(), name="get all properties"),
 ]

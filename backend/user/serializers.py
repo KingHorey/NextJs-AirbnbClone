@@ -4,12 +4,14 @@ from reviews.models import Review
 from .models import User
 from reviews.serializers import ReviewSerializer
 
+from user_preferences.serializers import UpdatePreferencesSerializer
 
 class UserSerializer(serializers.ModelSerializer):
-
+    preferences = UpdatePreferencesSerializer()
     class Meta:
         model = User
-        exclude = ["password"]
+        fields = "__all__"
+        # exclude = ["password"]
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
