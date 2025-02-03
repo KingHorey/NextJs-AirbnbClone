@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=User)
-def send_welcome_verification_mail(sender, instance, created, **kwargs) -> \
+def send_welcome_verification_mail(sender, instance, **kwargs) -> \
         None:
     """ function for sending a welcome mail and a verification mail to a
     user on successful signup """

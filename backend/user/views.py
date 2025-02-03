@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from user.serializers import UserSerializer, RegisterUserSerializer, GetBankDetailsSerializer, GetAllBankDetailsSerializer
 from .models import User, BankingDetails
-from rest_framework_simplejwt.views import TokenObtainPairView
-from user_preferences.models import UserPreferences
+# from rest_framework_simplejwt.views import TokenObtainPairView
+# from user_preferences.models import UserPreferences
 
 class GetUserInfoView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
@@ -17,7 +17,6 @@ class GetUserInfoView(RetrieveUpdateAPIView):
 class RegisterUserView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterUserSerializer
-
 
 
 class GetAllUsersView(ListAPIView):
