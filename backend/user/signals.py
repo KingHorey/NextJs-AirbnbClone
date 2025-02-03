@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=User)
-def send_welcome_verification_mail(sender, instance, **kwargs) -> \
+def send_welcome_verification_mail(sender, instance, created, **kwargs) -> \
         None:
     """ function for sending a welcome mail and a verification mail to a
     user on successful signup """
@@ -19,7 +19,7 @@ def send_welcome_verification_mail(sender, instance, **kwargs) -> \
         logger.info("No instance created")
         return
     if instance:
-        UserPreferences.objects.create(user=instance)
+        UserPreferences.objects.get_or_create(user=instance)
         instance.preferences.save()
         if instance.preferences.email_notifications: # check if user has email notifications enabled
             send_welcome_mail.apply_async(args=[str(instance.id)])
