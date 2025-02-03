@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.utils.translation import activate
 
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateAPIView
@@ -69,8 +69,10 @@ class UpdateUserPreferencesView(RetrieveUpdateAPIView):
 			Get the user preferences object.
 		"""
 		# return self.request.user.preferences - let's not use this
-		exists, _ = UserPreferences.objects.get_or_create(user=self.request.user) # will always work because there are default preferences
-		return exists
+		preferences, _ = UserPreferences.objects.get_or_create(user=self.request.user) # will always work because there are default preferences
+		activate(preferences.language)
+		self.request.LANGUAGE_CODE = preferences.language
+		return preferences
 
 	def put(self, request, *args, **kwargs):
 		"""
@@ -83,6 +85,8 @@ class UpdateUserPreferencesView(RetrieveUpdateAPIView):
 		serializer = self.get_serializer(object, data=request.data, partial=True)
 		serializer.is_valid(raise_exception=True)
 		serializer.save()
+		activate(serializer.instance.language)
+		request.LANGUAGE_CODE = serializer.instance.language
 		return Response({
 			'data': serializer.data
 		}, status=status.HTTP_200_OK)
