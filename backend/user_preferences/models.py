@@ -10,7 +10,6 @@ User = get_user_model()
 
 class UserPreferences(models.Model):
     """_summary_
-
     Args:
         models (_type_): _description_
 
@@ -32,7 +31,6 @@ class UserPreferences(models.Model):
     currency = models.CharField(choices=CURRENCIES, max_length=10, default='USD')
     promotional_emails = models.BooleanField(default=False)
     user = models.OneToOneField(User, related_name='preferences', on_delete=models.CASCADE)
-
 
     def __str__(self):
         return f"{self.user.get_full_name}'s Preferences"

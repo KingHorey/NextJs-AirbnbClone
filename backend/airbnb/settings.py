@@ -23,7 +23,7 @@ from django.utils.translation import gettext_lazy as _
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'es-es'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -77,6 +77,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ),
 }
+SITE_ID = 1  # Set the default site ID
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
@@ -111,7 +112,9 @@ INSTALLED_APPS = [
     'location',
     'payment',
     'user_preferences',
-    'drf_yasg'
+    'drf_yasg',
+    'django.contrib.sites',
+    'django.contrib.sitemaps'
 ]
 
 SWAGGER_SETTINGS = {
