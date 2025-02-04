@@ -4,6 +4,7 @@ from django.utils.timezone import now
 from typing import Union, Optional
 
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User, UserManager, AbstractBaseUser, PermissionsMixin
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.phonenumber import PhoneNumber
@@ -41,7 +42,7 @@ class CustomUserManager(UserManager):
         """
 
         if email is None:
-            return "Please provide an email address"
+            return _("Please provide an email address")
         email = self.normalize_email(email)
         user = self.model(email=email, **fields)
         if password is None:
@@ -63,11 +64,11 @@ class CustomUserManager(UserManager):
                         An instance of the User model - regular user
         """
 
-        fields.setdefault('is_admin', False)
-        fields.setdefault('is_staff', False)
+        fields.setdefault(_('is_admin'), False)
+        fields.setdefault(_('is_staff'), False)
         # later set to false, so users can use verification link to update
-        fields.setdefault('is_active', True)
-        fields.setdefault('is_superuser', False)
+        fields.setdefault(_('is_active'), True)
+        fields.setdefault(_('is_superuser'), False)
 
         user = self._prefill_user_details(email=email, password=password,
                                           **fields)
@@ -83,17 +84,17 @@ class CustomUserManager(UserManager):
                 returns:
                         An instance of the User model - Admin user
         """
-        fields.setdefault('is_admin', True)
-        fields.setdefault('is_staff', True)
-        fields.setdefault('is_active', True)
-        fields.setdefault('is_superuser', True)
+        fields.setdefault(_('is_admin'), True)
+        fields.setdefault(_('is_staff'), True)
+        fields.setdefault(_('is_active'), True)
+        fields.setdefault(_('is_superuser'), True)
 
         user = self._prefill_user_details(email=email, password=password,
                                           **fields)
         return user
 
 
-gender = [('M', 'Male'), ('F', 'Female')]
+gender = [('M', _('Male')), ('F', _('Female'))]
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -144,8 +145,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         """ metadata class"""
-        verbose_name = "user"
-        verbose_name_plural = "users"
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
 
 
 
@@ -168,7 +169,7 @@ class BankingDetails(models.Model):
         return f"{self.bank_name} for {self.user.email}"
 
     class Meta:
-        order_with_respect_to = "user"
-        verbose_name = "Bank Detail"
-        verbose_name_plural = "Bank Details"
+        order_with_respect_to = _("user")
+        verbose_name = _("Bank Detail")
+        verbose_name_plural = _("Bank Details")
 
