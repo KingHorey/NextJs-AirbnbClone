@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User, BankingDetails
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
@@ -11,4 +11,8 @@ class UserAdmin(admin.ModelAdmin):
         "fields": ["is_active", "is_staff", "is_superuser", "is_admin"]
     })]
 
+class BankingDetailsAdmin(admin.ModelAdmin):
+    list_display = ["user", 'bank_name', 'mask_account', 'created_at']
+
 admin.site.register(User, UserAdmin)
+admin.site.register(BankingDetails, BankingDetailsAdmin)

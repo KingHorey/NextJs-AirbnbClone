@@ -23,6 +23,8 @@ from django.utils.translation import gettext_lazy as _
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+ENCRYPT_KEY = config("FERNET_ENCRYPT_KEY")
+
 LANGUAGE_CODE = 'es-es'
 USE_I18N = True
 USE_L10N = True
@@ -130,6 +132,7 @@ SWAGGER_SETTINGS = {
 MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -167,7 +170,7 @@ EMAIL_TIMEOUT = 300
 DEFAULT_FROM_EMAIL = config("MAIL_USER")
 
 # WSGI_APPLICATION = 'airbnb.wsgi.application'
-ASGI_APPLICATION = 'airbnb.asgi.application'
+ASGI_APPLICATION = 'airbnb.asgi:application'
 
 # Channel Layers
 CHANNEL_LAYERS = {
@@ -264,7 +267,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
-    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "user.serializers.CustomTokenObtainPairSerializer",
     "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",

@@ -1,9 +1,10 @@
 from uuid import uuid4
-from django.utils.timezone import now
-
 from typing import Union, Optional
+import hashlib
 
+from airbnb import cipher
 from django.db import models
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User, UserManager, AbstractBaseUser, PermissionsMixin
 from phonenumber_field.formfields import PhoneNumberField
@@ -161,9 +162,11 @@ class BankingDetails(models.Model):
     """
     id = models.UUIDField(primary_key=True, editable=False, default=uuid4)
     bank_name = models.CharField(max_length=30, null=False)
-    account_number = models.IntegerField(null=False, blank=False)
+    account_number = models.CharField(null=False, blank=False, max_length=34, unique=True)
+    account_number_hash = models.CharField(max_length=68, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='banking_details')
     is_default = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=now)
 
     def __str__(self):
         return f"{self.bank_name} for {self.user.email}"
@@ -172,4 +175,23 @@ class BankingDetails(models.Model):
         order_with_respect_to = _("user")
         verbose_name = _("Bank Detail")
         verbose_name_plural = _("Bank Details")
+
+    def save(self, *args, **kwargs):
+        """
+        _summary_
+        override the save method to set the default bank details for the user
+        """
+        if not self.account_number_hash:
+            self.account_number_hash = hashlib.sha256(self.account_number.encode()).hexdigest()
+            self.account_number = cipher.encrypt(self.account_number.encode()).decode()
+        super().save(*args, **kwargs)
+
+    @property
+    def decrypt_account(self):
+        return cipher.decrypt(self.account_number.encode()).decode()
+
+    @property
+    def mask_account(self):
+        decrypted = self.decrypt_account
+        return f"{decrypted[:2]}****{decrypted[-2:]}"
 
