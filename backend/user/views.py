@@ -19,6 +19,7 @@ class RegisterUserView(CreateAPIView):
     serializer_class = RegisterUserSerializer
 
 
+
 class GetAllUsersView(ListAPIView):
     queryset = User.objects.select_related('preferences').all()
     serializer_class = UserSerializer
