@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-export default {
+module.exports = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,6 +8,14 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      xs: "300px",
+      sm: "550px",
+      md: "950px",
+      lg: "1128px",
+      "2xl": "1640px",
+      "3xl": "1880px",
+    },
     extend: {
       transitionDuration: {
         5000: "5000ms",
@@ -58,9 +66,7 @@ export default {
           "5": "hsl(var(--chart-5))",
         },
       },
-      screens: {
-        xs: "320px",
-      },
+
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -68,5 +74,6 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwind-scrollbar"),require("tailwindcss-animate")],
+
 } satisfies Config;

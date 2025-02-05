@@ -17,6 +17,7 @@ export const useAppContext = () => {
   return context;
 };
 
+
 export default function AppContextProvider({
   children,
 }: {
