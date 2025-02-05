@@ -13,10 +13,11 @@ class PropertiesListSerializer(serializers.ModelSerializer):
     """ class to show the properties as a summary, ideal for the homepage or search results """
     address = AddressSerializer()
     rating = serializers.SerializerMethodField()
+    bookmarked = serializers.SerializerMethodField()
 
     class Meta:
         model = Properties
-        fields = ["id", "address", "price_per_night", "rating"]
+        fields = ["id", "address", "price_per_night", "rating", "bookmarked"]
 
     def get_rating(self, obj: 'Properties') -> int:
         """
@@ -32,6 +33,18 @@ class PropertiesListSerializer(serializers.ModelSerializer):
         average_rating = sum(
             (reviews.rating for reviews in reviews)) / number_of_reviews
         return round(average_rating, 2)
+
+    def get_bookmarked(self, obj: 'Properties') -> bool:
+        """
+                method field to check if a property has been bookmarked by a user
+
+                Args:
+                        obj - property instance to be queried
+        """
+        user = self.context.get('request').user
+        if user.is_authenticated:
+            return obj.favorited_by.filter(user=user).exists()
+        return False
 
 
 class PropertyDetailSerializer(serializers.ModelSerializer):

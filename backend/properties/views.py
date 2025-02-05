@@ -27,7 +27,7 @@ class GetAllProperties(ListAPIView):
 		cache_hit = cache.get(key)
 		if cache_hit:
 			return Response({'data': cache_hit}, status=status.HTTP_200_OK)
-		data = self.get_queryset().filter(categories__iexact=params.lower())
+		data = self.get_queryset().filter(categories__iexact=params.lower()).order_by('created_at').all()
 		if data:
 			serializer = self.get_serializer(data, many=True)
 			cache.set(f"{params}_{page}", serializer.data)

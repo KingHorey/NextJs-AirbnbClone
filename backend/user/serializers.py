@@ -1,9 +1,12 @@
 from rest_framework import serializers
 
 from reviews.models import Review
-from .models import User
+from .models import User, BankingDetails
 from reviews.serializers import ReviewSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, AuthUser
+from rest_framework_simplejwt.tokens import Token
 
+from airbnb import cipher
 from user_preferences.serializers import UpdatePreferencesSerializer
 
 class UserSerializer(serializers.ModelSerializer):
@@ -47,3 +50,93 @@ class UserInfoSerializer(serializers.ModelSerializer):
         property_reviews = Review.objects.filter(property__in=user_properties)
         user['reviews'] = ReviewSerializer(property_reviews,many=True).data
         return user
+
+
+
+class GetBankDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BankingDetails
+        fields = "__all__"
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
+
+    def to_representation(self, instance):
+        bank_details = super().to_representation(instance)
+        bank_details['account_number'] = cipher.decrypt(instance.account_number.encode()).decode()
+        return bank_details
+
+
+
+class GetAllBankDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BankingDetails
+        fields = "__all__"
+        extra_kwargs = {
+            # 'user': {'read_only': True},
+            'account_number_hash': {
+                'read_only': True},
+            "mask_account": {
+                'read_only': True
+                }
+
+        }
+
+    def create(self, validated_data):
+        user = self.context.get('request').user
+        is_default = validated_data.get('is_default', None)
+        if is_default == True:
+            # update any existing bank details to false
+            BankingDetails.objects.filter(user=user, is_default=True).update(is_default=False)
+        validated_data['user'] = user
+        instance = BankingDetails.objects.create(**validated_data)
+        return instance
+
+    def to_representation(self, instance):
+        bank_details = super().to_representation(instance)
+        bank_details['account_number'] = instance.mask_account
+        return bank_details
+
+# class AdminViewBankDetailsSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = BankingDetails
+#         fields = "__all__"
+
+#     def to_representation(self, instance):
+#         bank_details = super().to_representation(instance)
+#         bank_details['account_number'] = instance.mask_account
+#         return bank_details
+
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """
+    Custom TokenObtainPairSerializer
+
+    Args:
+        TokenObtainPairSerializer (class): Base class for token serializers
+
+    Returns:
+        Token: Token instance
+    """
+
+    @classmethod
+    def get_token(cls, user: AuthUser) -> Token:
+        """
+        Get the token for the user
+
+        Args:
+            user (AuthUser): AuthUser instance
+
+        Returns:
+            Token: Token instance
+        """
+        token = super().get_token(user)
+        # add custom claims
+        token['email'] = user.email
+        token['full_name'] = user.get_full_name
+        token['language'] = user.preferences.language
+        token['currency'] = user.preferences.currency
+        token['timezone'] = user.preferences.timezone
+
+        return token
