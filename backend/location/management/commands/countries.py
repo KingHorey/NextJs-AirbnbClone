@@ -4,6 +4,7 @@ from django.core.management import BaseCommand
 from django.core.exceptions import ValidationError
 from ...models import Continent, Country
 
+
 african_countries = {
     "Africa":  [
     {"country": "Algeria", "calling_code": "+213"},

@@ -1,4 +1,4 @@
-from celery import shared_task, chain
+from celery import shared_task
 from airbnb import logger
 
 from django.conf import settings
@@ -15,7 +15,6 @@ def send_review_mail(self, mail: str, **kwargs) -> None:
         args:
             - mail: users/host mail
     """
-
     recipient = mail
     property_name = kwargs.get('property')
     sender = settings.DEFAULT_FROM_EMAIL
@@ -38,9 +37,15 @@ def send_notification(self, user_email: str, **kwargs) -> None:
     """
     try:
         content = kwargs.get('content')
-        user = User.objects.get(email=user_email)
+        notification_type = kwargs.get('notification_type')
+        link = kwargs.get('link')
+        # title = str(content)[:15]
+        user = User.objects.get(email=user_email) # email belongs to the
+        # property host
         Notification.objects.create(title="You have a new review",
-                                    content=content, user=user)
+                                    content=content, user=user,
+                                    notification_type=notification_type,
+                                    link=link)
     except User.DoesNotExist as e:
         logger.error(f"User does not exist - {e}")
     except Exception as exc:
