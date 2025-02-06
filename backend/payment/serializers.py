@@ -6,7 +6,7 @@ class CreatePaymentIntentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = "__all__"
+        fields = ["amount", "user", "booking", "channel"]
 
     def create(self, validated_data):
         print(validated_data)

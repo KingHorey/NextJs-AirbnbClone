@@ -1,12 +1,17 @@
 from uuid import uuid4
-from django.utils.timezone import now
-
 from typing import Union, Optional
+import hashlib
 
+from airbnb import cipher
 from django.db import models
+from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User, UserManager, AbstractBaseUser, PermissionsMixin
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.phonenumber import PhoneNumber
+
+
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -38,7 +43,7 @@ class CustomUserManager(UserManager):
         """
 
         if email is None:
-            return "Please provide an email address"
+            return _("Please provide an email address")
         email = self.normalize_email(email)
         user = self.model(email=email, **fields)
         if password is None:
@@ -60,11 +65,11 @@ class CustomUserManager(UserManager):
                         An instance of the User model - regular user
         """
 
-        fields.setdefault('is_admin', False)
-        fields.setdefault('is_staff', False)
+        fields.setdefault(_('is_admin'), False)
+        fields.setdefault(_('is_staff'), False)
         # later set to false, so users can use verification link to update
-        fields.setdefault('is_active', True)
-        fields.setdefault('is_superuser', False)
+        fields.setdefault(_('is_active'), True)
+        fields.setdefault(_('is_superuser'), False)
 
         user = self._prefill_user_details(email=email, password=password,
                                           **fields)
@@ -80,17 +85,17 @@ class CustomUserManager(UserManager):
                 returns:
                         An instance of the User model - Admin user
         """
-        fields.setdefault('is_admin', True)
-        fields.setdefault('is_staff', True)
-        fields.setdefault('is_active', True)
-        fields.setdefault('is_superuser', True)
+        fields.setdefault(_('is_admin'), True)
+        fields.setdefault(_('is_staff'), True)
+        fields.setdefault(_('is_active'), True)
+        fields.setdefault(_('is_superuser'), True)
 
         user = self._prefill_user_details(email=email, password=password,
                                           **fields)
         return user
 
 
-gender = [('M', 'Male'), ('F', 'Female')]
+gender = [('M', _('Male')), ('F', _('Female'))]
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -141,5 +146,52 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         """ metadata class"""
-        verbose_name = "user"
-        verbose_name_plural = "users"
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
+
+
+
+class BankingDetails(models.Model):
+    """_summary_
+
+    Args:
+        models (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid4)
+    bank_name = models.CharField(max_length=30, null=False)
+    account_number = models.CharField(null=False, blank=False, max_length=34, unique=True)
+    account_number_hash = models.CharField(max_length=68, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='banking_details')
+    is_default = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=now)
+
+    def __str__(self):
+        return f"{self.bank_name} for {self.user.email}"
+
+    class Meta:
+        order_with_respect_to = _("user")
+        verbose_name = _("Bank Detail")
+        verbose_name_plural = _("Bank Details")
+
+    def save(self, *args, **kwargs):
+        """
+        _summary_
+        override the save method to set the default bank details for the user
+        """
+        if not self.account_number_hash:
+            self.account_number_hash = hashlib.sha256(self.account_number.encode()).hexdigest()
+            self.account_number = cipher.encrypt(self.account_number.encode()).decode()
+        super().save(*args, **kwargs)
+
+    @property
+    def decrypt_account(self):
+        return cipher.decrypt(self.account_number.encode()).decode()
+
+    @property
+    def mask_account(self):
+        decrypted = self.decrypt_account
+        return f"{decrypted[:2]}****{decrypted[-2:]}"
+

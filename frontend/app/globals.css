@@ -79,4 +79,30 @@ body {
   .custom_height {
     min-height: calc(100vh - 80px);
   }
+  .scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Track */
+  .scrollbar::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  /* Handle */
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+    
+  }
+
+  /* Handle on hover */
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+  }
 }

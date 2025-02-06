@@ -1,93 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Property Review Notification</title>
-    <style>
-        body {
-            font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif;
-            line-height: 1.6;
-            color: #222222;
-            margin: 0;
-            padding: 0;
-        }
-        .email-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-        }
-        .header {
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .logo {
-            width: 120px;
-            margin-bottom: 20px;
-        }
-        .content {
-            padding: 20px;
-            background-color: #ffffff;
-            border: 1px solid #ebebeb;
-            border-radius: 12px;
-        }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #717171;
-            font-size: 14px;
-        }
-        .button {
-            display: inline-block;
-            padding: 14px 24px;
-            background-color: #FF385C;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-weight: 600;
-        }
-        .button:hover {
-            background-color: #E31C5F;
-        }
-        @media only screen and (max-width: 600px) {
-            .email-container {
-                width: 100% !important;
-                padding: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="email-container">
-        <div class="header">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg" alt="Airbnb" class="logo">
-            <h1 style="color: #FF385C;">New Review Alert!</h1>
-        </div>
+<html>
 
-        <div class="content">
+    <head>
+        <title>New Property Review Notification</title>
+        <style type="text/css">
+            @media screen {
+                .email-container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    border-radius: 15px;
+                    overflow: hidden;
+                }
+            }
+
+            p,
+            li,
+            h1,
+            h2 {
+                color: #000000 !important;
+            }
+        </style>
+    </head>
+
+    <body style="margin: 0; padding: 20px; background-color: #ffffff; font-family: Arial, sans-serif;">
+        <div class="email-container"
+             style="background: #ffffff; border-radius: 15px; padding: 30px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 1px solid #02020296;">
+            <!-- Responsive Logo -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"
+                 alt="Airbnb Logo"
+                 style="display: block; max-width: 200px; width: 100%; height: auto; margin: 0 auto 25px auto;">
+            <h1 style="text-align: center; color: #333333; margin-top: 0;">New Review Alert!</h1>
+
             <h2>Hello!</h2>
             <p>Your property <strong>{{ property_name }}</strong> has received a new review on Airbnb.</p>
-
-            <p>Maintaining active communication with your guests through reviews helps build trust in the Airbnb community and can improve your property's visibility in search results.</p>
-
+            <p>Maintaining active communication with your guests through reviews helps build trust in the Airbnb
+                community and can improve your property's visibility in search results.</p>
             <p>Remember, responding within 24 hours shows future guests that you're a dedicated and attentive host!</p>
 
-            <center>
-                <a href="#" class="button">View Review</a>
-            </center>
+            <a href="#" class="button"
+               style="display: block; width: fit-content; color: #ffffff; background-color: #FF5C61; padding: 10px; border-radius: 10px; margin: 20px auto; text-decoration: none; font-weight: bold;">View
+                Review</a>
 
-            <p>If you need any assistance with managing your reviews or have questions about your listing, our support team is here to help 24/7.</p>
-
+            <p>If you need any assistance with managing your reviews or have questions about your listing, our support
+                team is here to help 24/7.</p>
             <p>Happy hosting!<br>The Airbnb Team</p>
+
+            <div class="footer" style="text-align: center; margin-top: 30px;">
+                <p style="color: #777; font-size: 12px;">This is an automated message from Airbnb. Please do not reply
+                    directly to this email.</p>
+                <p style="color: #777; font-size: 12px;">© 2025 Airbnb, Inc. All rights reserved.<br>
+                    Airbnb and the Airbnb logo are trademarks of Airbnb, Inc.</p>
+            </div>
         </div>
-        <div class="footer">
-            <p>This is an automated message from Airbnb. Please do not reply directly to this email.</p>
-            <p>© 2025 Airbnb, Inc. All rights reserved.<br>
-            Airbnb and the Airbnb logo are trademarks of Airbnb, Inc.</p>
-        </div>
-    </div>
-</body>
+    </body>
+
 </html>

@@ -16,7 +16,6 @@ def send_notification(self, user_email: str, **kwargs) -> None:
         send a notification to the user when an action is made
         args:
             user_email - email of the host who has the property
-
     """
     try:
         content = kwargs.get('content')

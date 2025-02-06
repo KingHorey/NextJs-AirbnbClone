@@ -20,15 +20,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
-    <html lang="en">
+    <html lang="en" >
       <AppContextProvider>
-        <body
-          className={`${manRope.className} bg-white text-black antialiased max-w-[1500px] overflow-y-scroll`}
+        <body className={`${manRope.className}   text-black antialiased    `}
         >
+          <div className={`max-w-[150rem] mx-auto px-6  `}>
           <Navbar />
           <AuthDisplay />
           {children}
+          </div>
+          
           <Footer />
         </body>
       </AppContextProvider>

@@ -1,41 +1,75 @@
-from typing import Optional
+from typing import Optional, Union
+import logging
 from uuid import UUID
 
 from celery import shared_task
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
-from .models import User
-
-import logging
+from services.mail_send import mail_service
 
 
+User = get_user_model()
 logger = logging.getLogger(__name__)
 
-default_sender = settings.DEFAULT_FROM_EMAIL
 welcome_mail = "welcome_mail.html"
 password_reset = "password_reset.html"
+login_mail = "login.html"
 
 
-@shared_task(max_retries=3)
-def send_welcome_mail(user_id: str) -> None:
+def get_user(user_id) -> Union[None, User]: # type: ignore
+    try:
+        return User.objects.get(id=UUID(user_id))
+    except User.DoesNotExist:
+        return None
+
+
+@shared_task(bind=True, max_retries=3)
+def send_welcome_mail(self, user_id: str) -> Optional[str]:
     """ send mail when user successfully registers """
     if not user_id:
         return "NO user"
     try:
-        user = User.objects.get(id=UUID(user_id))
+        user = get_user(user_id)
+        if user is None:
+            return "No user ID provided"
+        email_notification = user.preferences.email_notifications
+        if not email_notification:
+            return "User has disabled email notifications"
         subject = "Welcome to AirBnb"
-        content = render_to_string(welcome_mail, {
+        content =  {
             'email': user.email,
             'first_name': user.first_name
-        })
-        send_mail(subject, "A home nearby", default_sender,
-                  auth_password=settings.EMAIL_HOST_PASSWORD,
-                  recipient_list=[user.email],
-                  html_message=content)
-    except User.DoesNotExist:
-        return
+        }
+        logger.info(f"Sending welcome mail to {user.email}")
+        mail_service.mail_send(subject, content, user.email, welcome_mail)
     except Exception as e:
         logger.error(f"Unable to send email to {user.email} - {e}")
 
+
+@shared_task(max_retries=3)
+def send_login_mail(user_id: str) -> None:
+    """_summary_
+
+    Args:
+        user_id (str): User id
+    """
+
+    if not user_id:
+        return "No user provided"
+    try:
+        user = get_user(user_id)
+        if user is None:
+            return "No user id provided"
+        email_notification = user.preferences.email_notifications
+        if not email_notification:
+            return "User has disabled email notifications"
+        subject = "New Login"
+        content =  {
+            'email': user.email,
+            'first_name': user.first_name
+        }
+        mail_service.mail_send(subject, content, user.email, welcome_mail, subject)
+    except Exception as e:
+        logger.error(f"Unable to send email to {user.email} - {e}")

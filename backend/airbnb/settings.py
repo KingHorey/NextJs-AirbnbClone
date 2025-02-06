@@ -16,9 +16,42 @@ from datetime import timedelta
 import os
 
 from django.conf.global_settings import EMAIL_TIMEOUT
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+ENCRYPT_KEY = config("FERNET_ENCRYPT_KEY")
+
+LANGUAGE_CODE = 'es-es'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('fr', _('French')),
+    ('es', _('Spanish')),
+    ('de', _('German')),
+    ('it', _('Italian')),
+    ('zh', _('Chinese')),
+    ('ja', _('Japanese')),
+    ('hi', _('Hindi')),
+    ('ru', _('Russian')),
+    ('ar', _('Arabic')),
+]
+
+CURRENCIES = [
+    ('USD', _('US Dollar')),
+    ('EUR', _('Euro')),
+    ('NGN', _('Naira'))
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,8 +71,15 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
 }
+SITE_ID = 1  # Set the default site ID
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
@@ -73,7 +113,10 @@ INSTALLED_APPS = [
     'booking',
     'location',
     'payment',
-    'drf_yasg'
+    'user_preferences',
+    'drf_yasg',
+    'django.contrib.sites',
+    'django.contrib.sitemaps'
 ]
 
 SWAGGER_SETTINGS = {
@@ -87,13 +130,15 @@ SWAGGER_SETTINGS = {
 }
 
 MIDDLEWARE = [
-
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'middleware.CustomLocaleMiddleware.CustomLocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -118,13 +163,14 @@ TEMPLATES = [
 EMAIL_HOST = config("MAIL_HOST")
 EMAIL_HOST_USER = config("MAIL_USER")
 EMAIL_HOST_PASSWORD = config("MAIL_PASSWORD")
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_TIMEOUT = 300
 DEFAULT_FROM_EMAIL = config("MAIL_USER")
 
 # WSGI_APPLICATION = 'airbnb.wsgi.application'
-ASGI_APPLICATION = 'airbnb.asgi.application'
+ASGI_APPLICATION = 'airbnb.asgi:application'
 
 # Channel Layers
 CHANNEL_LAYERS = {
@@ -221,7 +267,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
-    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "user.serializers.CustomTokenObtainPairSerializer",
     "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",

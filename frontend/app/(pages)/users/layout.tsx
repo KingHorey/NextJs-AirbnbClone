@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html>
-      <body className={`${manRope.className} max-w-[1500px]`}>
+      <body className={`${manRope.className} max-w-[150rem] mx-auto px-6`}>
         <Navbar />
         <div>
           {children}

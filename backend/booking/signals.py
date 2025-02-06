@@ -9,24 +9,20 @@ from notifications.tasks import send_notification
 from celery import group
 
 @receiver(post_save, sender=Booking)
-def send_booking_mail(sender, instance, created, **kwargs):
+def send_booking_mail(sender, instance, **kwargs):
     """ mail to send to a user once a booking has been made """
-    if instance and created:
+    if instance:
         user = instance.guest
         host = instance.property.host
-        group(send_user_booking_mail.s(user.email,
-                                                        user.first_name,
-                                                        user.last_name,
-                                                       kwargs={
-                                                           'number_of_guests':
-                                                               instance.number_of_guests,
-                                                           'start_date':
-                                                               instance.start_date,
+        print(instance.status) # status of the booking
+        group(send_user_booking_mail.s(user.email, user.first_name, user.last_name, kwargs={ 'number_of_guests': instance.number_of_guests,
+                                                                                            'start_date': instance.start_date,
                                                            'end_date':
                                                                instance.end_date,
                                                            'price_per_night': instance.property.price_per_night,
                                                            'property_name':
-                                                               instance.property.name
+                                                               instance.property.name,
+                                                            'status': instance.status
                                                        }),
         send_host_booking_mail.s(host.email, host.first_name,
                                kwargs={

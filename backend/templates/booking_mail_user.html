@@ -1,27 +1,87 @@
-<!-- templates/booking_confirmation_email.html -->
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Booking Confirmation</title>
-</head>
-<body>
-    <h1>Booking Confirmation</h1>
 
-    <p>Dear {{ first_name }} {{ last_name }},</p>
+  <head>
+    <title>Booking Status</title>
+    <style type="text/css">
+      @media screen {
+        .email-container {
+          max-width: 600px;
+          margin: 20px auto;
+          border-radius: 15px;
+          overflow: hidden;
+        }
+      }
 
-    <p>Your booking for <strong>{{ property_name }}</strong> has been
-        successfully confirmed.</p>
+      p,
+      li,
+      h1 {
+        color: #000000 !important;
+      }
+    </style>
+  </head>
 
-    <p>Details:</p>
-    <ul>
+  <body style="margin: 0; padding: 20px; background-color: #ffffff; font-family: Arial, sans-serif;">
+    <div class="email-container"
+         style="background: #ffffff; border-radius: 15px; padding: 30px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 1px solid #02020296;">
+      <!-- Responsive Logo -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"
+           alt="Airbnb Logo"
+           style="display: block; max-width: 200px; width: 100%; height: auto; margin: 0 auto 25px auto;">
+
+      <h1 style="text-align: center; color: #333333; margin-top: 0;">
+        {% if status == 'confirmed' %}
+        Booking Accepted
+        {% elif status == 'rejected' %}
+        Booking Rejected
+        {% else %}
+        Booking Received
+        {% endif %}
+      </h1>
+
+      <p>Dear {{ first_name }} {{ last_name }},</p>
+      {% if status == 'confirmed' %}
+      <p>
+        Your booking for <strong>{{ property_name }}</strong> has been accepted
+        and confirmed.
+      </p>
+      <p>Kindly login to the app to make payment.</p>
+      {% elif status == 'rejected' %}
+      <p>
+        Your booking for <strong>{{ property_name }}</strong> has been rejected.
+        <br />
+        Please head back to the app to make another booking.
+      </p>
+      {% else %}
+      <p>
+        Your booking for <strong>{{ property_name }}</strong> has been received.
+      </p>
+      <p>
+        Once this booking is accepted, you will receive a mail for payment to be
+        made.
+      </p>
+      {% endif %}
+
+      <p><strong>Booking Details:</strong></p>
+      <ul>
         <li><strong>Start Date:</strong> {{ start_date }}</li>
         <li><strong>End Date:</strong> {{ end_date }}</li>
-        <li><strong>Number of Guests:</strong> {{ number_of_guests
-            }}</li>
+        <li><strong>Number of Guests:</strong> {{ number_of_guests }}</li>
         <li><strong>Price:</strong> {{ price_per_night }} per night</li>
-    </ul>
-    <p>If you made a mistake with this booking: please click here to cancel
-    <a href="#">Cancel</a></p>
-    <p>Thank you for booking with us!</p>
-</body>
+      </ul>
+      <p style="margin-bottom: 10px;">
+        If you made a mistake with this booking, please click here to cancel:
+      </p>
+      <a href="#" class="button"
+         style="display: block; width: fit-content; color: #ffffff; background-color: #FF5C61; padding: 10px; border-radius: 10px; margin: 0 auto; text-decoration: none; font-weight: bold;">Cancel
+        Booking</a>
+
+      <p>This is an automated mail - do not reply to this</p>
+      <div class="footer">
+        <p>Thank you for booking with us!</p>
+        <p>The AirBnb - Clone team</p>
+      </div>
+    </div>
+  </body>
+
 </html>

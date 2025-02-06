@@ -6,20 +6,21 @@ from channels.auth import AuthMiddlewareStack
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework.exceptions import AuthenticationFailed
 from django.db import close_old_connections
-from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
-from rest_framework_simplejwt.tokens import UntypedToken
-from django.contrib.auth import get_user_model
-from django.conf import settings
+# from django.contrib.auth import get_user_model
+# from django.conf import settings
 
-User = get_user_model()
 
 
 class SimpleJWTMiddleware(BaseMiddleware):
     """ custom middleware for simple jwt and django channels """
+
     def __init__(self, inner):
         self.inner = inner
 
     async def __call__(self, scope, receive, send):
+        # from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
+        from rest_framework_simplejwt.tokens import UntypedToken
+
         close_old_connections()
         # query_string = parse_qs(scope['query_string'])
         token = scope['subprotocols'][1]

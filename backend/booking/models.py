@@ -3,10 +3,11 @@ from typing import Any
 
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth import get_user_model
 
-from properties.models import Properties
+# from properties.models import Properties
 from django.db.models import Q
 
 User = get_user_model()
@@ -14,11 +15,11 @@ User = get_user_model()
 
 class Booking(models.Model):
     BOOKING_STATUS = [
-        ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
-        ('rejected', 'Rejected'),
-        ('cancelled', 'Cancelled'),
-        ('completed', 'Completed')
+        ('pending', _('Pending')),
+        ('confirmed', _('Confirmed')),
+        ('rejected', _('Rejected')),
+        ('cancelled', _('Cancelled')),
+        ('completed', _('Completed'))
     ]
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
     property = models.ForeignKey(
@@ -35,13 +36,13 @@ class Booking(models.Model):
 
     def save(self, *args, **kwargs) -> Any:
         """ custom method to adjust booking save method """
-        if self.property.booking_type == "INSTANT":
+        if self.property.booking_type == _("INSTANT"):
             self.status = 'completed'
         else:
             booking_exists = self.check_bookings(self.id)
             if booking_exists:
-                raise ValidationError("Booking already exists in "
-                                      "date range")
+                raise ValidationError(_("Booking already exists in "
+                                      "date range"))
         self.total_price = self.calculate_total_price()
         super().save(*args, **kwargs)
 
@@ -59,17 +60,17 @@ class Booking(models.Model):
 
     def clean(self):
         if self.start_date >= self.end_date:
-            raise ValidationError("End date must be after start date")
+            raise ValidationError(_("End date must be after start date"))
         if self.property.booking_type == "INSTANT":
             booking_exists = self.is_available()
             if booking_exists:
-                raise ValidationError("Booking already exists in "
-                                      "date range")
+                raise ValidationError(_("Booking already exists in "
+                                      "date range"))
         elif self.property.booking_type == "BOOKING":
             booking_exists = self.check_bookings(self.id)
             if not booking_exists:
-                raise ValidationError("Booking within this range "
-                                      "has already been accepted")
+                raise ValidationError(_("Booking within this range "
+                                      "has already been accepted"))
 
     def calculate_total_price(self) -> float:
         """ calculate the amount to charge for booking based on the range of days """
@@ -86,7 +87,10 @@ class Booking(models.Model):
         ).exists()
 
     def __str__(self) -> str:
-        return f"{self.property.name} booking for {self.guest}"
+        return _('{property} booking for {guest}').format(
+            property=self.property.name,
+            guest=self.guest
+        )
 
     class Meta:
         constraints = [

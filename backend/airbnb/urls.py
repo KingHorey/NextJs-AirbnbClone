@@ -20,6 +20,8 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from django.conf.urls.i18n import i18n_patterns
+
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from properties.views import GetAllProperties
@@ -54,5 +56,30 @@ urlpatterns = [
                                                                 "view"),
     path("api/user/", include("user.urls"), name="USERS API"),
     path("api/payment/", include("payment.urls"), name="PAYMENT API"),
+    path("api/user-preferences/", include("user_preferences.urls"),
+         name="USER PREFERENCES API"),
     path("", GetAllProperties.as_view(), name="get all properties"),
 ]
+
+
+urlpatterns += i18n_patterns(
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0),
+         name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0),
+         name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
+         name='schema-redoc'),
+    path('admin/', admin.site.urls),
+    path('api/property/', include('properties.urls'), name="Properties API"),
+    path('api/review/', include('reviews.urls'), name="reviews API"),
+    path("api/favorite/", include('favorites.urls'), name="favorites API"),
+    path("api/booking/", include('booking.urls'), name="booking API"),
+    path("api/token/", TokenObtainPairView.as_view(), name="login view"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="register "
+                                                                "view"),
+    path("api/user/", include("user.urls"), name="USERS API"),
+    path("api/payment/", include("payment.urls"), name="PAYMENT API"),
+    path("api/user-preferences/", include("user_preferences.urls"),
+         name="USER PREFERENCES API"),
+    path("", GetAllProperties.as_view(), name="get all properties")
+)

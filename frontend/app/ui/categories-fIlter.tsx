@@ -73,14 +73,14 @@ const categories = [
 const CategoriesFilter = () => {
   const [selected, setSelected] = useState<string>("");
   return (
-    <div className="w-2/3 p-3 pl-16">
+    <div className="w-full ">
       <Carousel>
         <CarouselPrevious className="hover:shadow-md duration-200 transition-all" />
         <CarouselContent>
           {categories.map(({ image, text }, index: number) => (
             <CarouselItem
               key={index}
-              className="flex flex-col items-center justify-center w-6 h-full basis-36 gap-x-5 cursor-pointer group p-2"
+              className="flex flex-col items-center justify-center w-6 h-full sm:basis-20 gap-x-5 cursor-pointer group p-2 lg:basis-36 2xl:basis-26 3xl:basis-32"
               onClick={() =>
                 selected === text ? setSelected("") : setSelected(text)
               }
@@ -102,7 +102,7 @@ const CategoriesFilter = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselNext className="hover:shadow-md duration-200 transition-all" />
+        <CarouselNext className="hover:shadow-md duration-200 transition-all mr-2" />
       </Carousel>
     </div>
   );

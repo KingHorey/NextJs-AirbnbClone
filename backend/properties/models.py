@@ -1,12 +1,13 @@
 from uuid import uuid4
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from location.models import Address
 from amenities.models import Amenity
 from user.models import User
 
 
 class Properties(models.Model):
-    BOOKING_TYPE = [('instant', 'INSTANT'), ('booking', 'BOOKING')]
+    BOOKING_TYPE = [('instant', _('INSTANT')), ('booking', _('BOOKING'))]
     id = models.UUIDField(default=uuid4, editable=False, primary_key=True)
     name = models.CharField(null=False, blank=True, max_length=255,
                             help_text="Enter the name of the property (e.g., 'Sunset Villa').")
