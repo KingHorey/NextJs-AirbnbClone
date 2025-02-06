@@ -56,41 +56,36 @@ export const CustomDropDownLabel = React.forwardRef<
         {React.createElement(icon, { className: "w-4 h-4" })}
         <p className="font-semibold text-sm">{title}</p>
       </div>
-      <Form {...form}>
-        <form className="w-full">
-          <FormField
-            name={name}
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="p-0">
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder={placeholder}
-                    className="w-full border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 rounded-none h-5"
-                    onChange={(e) => {
-                      field.onChange(e);
-                      updateData(e.target.value);
-                    }}
-                    value={
-                      typeof data === "string"
-                        ? data
-                        : data?.from
-                        ? new Date(new Date(data.from).getTime() + 86400000)
-                            .toISOString()
-                            .split("T")[0]
-                        : data?.to &&
-                          new Date(data.to).toISOString().split("T")[0]
-                    }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {data && <CloseButton func={() => updateData("")} />}
-        </form>
-      </Form>
+      <FormField
+        name={name}
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="p-0">
+            <FormControl>
+              <Input
+                {...field}
+                placeholder={placeholder}
+                className="w-full border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 rounded-none h-5"
+                onChange={(e) => {
+                  field.onChange(e);
+                  updateData(e.target.value);
+                }}
+                value={
+                  typeof data === "string"
+                    ? data
+                    : data?.from
+                    ? new Date(new Date(data.from).getTime() + 86400000)
+                        .toISOString()
+                        .split("T")[0]
+                    : data?.to && new Date(data.to).toISOString().split("T")[0]
+                }
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      {data && <CloseButton func={() => updateData("")} />}
     </DropdownMenuLabel>
   );
 });
