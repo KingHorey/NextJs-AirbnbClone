@@ -2,6 +2,8 @@
 
 import React, { useRef, useState } from "react";
 
+import LocationSelect from "../customComponents/bookingFilter/locationSelect";
+
 import {
   Form,
   FormItem,
@@ -61,375 +63,14 @@ const NavSearch = ({ type }: { type: string }) => {
   return (
     <div className="mx-auto relative  lg:min-w-[850px] xs:max-w-full lg:max-w-[900px]  z-[100000000%] ">
       <Form {...form}>
-        <form className="w-full rounded-full hover:shadow-md  p-4 h-[70px]  grid border px-0 overflow-hidden shadow-lg">
+        <form className="w-full rounded-full hover:shadow-md transition-all duration-300 h-[70px]  grid border px-0 overflow-hidden shadow-lg">
           <div className=" min-h-full w-full flex items-center px-0  gap-x-2">
-            <div className="w-full hover:bg-gray-400/30 h-full px-10 rounded-full relative">
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger
-                  className="relative w-full h-full border-none"
-                  asChild
-                >
-                  <DropdownMenuLabel className="flex items-center justify-center gap-x-3">
-                    <MapPinHouseIcon />
-                    <p>Where</p>
-                  </DropdownMenuLabel>
-                </DropdownMenuTrigger>
-                <DropdownMenuPortal>
-                  <DropdownMenuContent
-                    className=" w-[25rem]  bg-white z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-19rem]  
-                       cursor-pointer "
-                    onPointerDownOutside={(e) => {
-                      console.log("Clicked outside", e);
-                    }}
-                  >
-                    <FormField
-                      name="destination"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem className=" py-5 ">
-                          <h4 className=" px-6 text-sm font-light ">
-                            Suggested destinations
-                          </h4>
-                          <div className=" px-3  flex flex-col gap-2 h-[450px] overflow-y-scroll  scrollbar   ">
-                            <FormControl className="">
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img1.png"
-                                  width={50}
-                                  height={100}
-                                  alt="London"
-                                />
-                                <div className="flex flex-col">
-                                  <h3 className="text-sm">
-                                    London,United Kingdom
-                                  </h3>
-                                  <p className="text-sm font-light">
-                                    For sights like Buckingham Palace
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img2.png"
-                                  width={50}
-                                  height={0}
-                                  alt="Lekki"
-                                />
-                                <div className="flex flex-col gap-">
-                                  <h3 className="text-sm">Lekki, Nigeria</h3>
-                                  <p className="text-sm font-light">
-                                    For its seaside allure
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg  ">
-                                <Image
-                                  src="/searchbar-image/img3.png"
-                                  width={50}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Toronto, Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For its bustling nightlife
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg  ">
-                                <Image
-                                  src="/searchbar-image/img4.png"
-                                  width={50}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">
-                                    Mississauga,Canada
-                                  </h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img5.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Ikeja, Nigeria</h3>
-                                  <p className="text-sm font-light">Near You</p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img6.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Accra, Ghana</h3>
-                                  <p className="text-sm font-light">
-                                    Popular beach destination
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img7.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Abuja,Nigeria</h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img8.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Winnipeg, Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg">
-                                <Image
-                                  src="/searchbar-image/img9.png"
-                                  width={50}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">
-                                    Brimingham,United Kingdom
-                                  </h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img10.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Paris,France</h3>
-                                  <p className="text-sm font-light">
-                                    For sights like Effiel Tower
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg">
-                                <Image
-                                  src="/searchbar-image/img11.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Nairobi,Kenya</h3>
-                                  <p className="text-sm font-light">
-                                    For nature lovers
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img12.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">
-                                    Manchester,United Kingdom
-                                  </h3>
-                                  <p className="text-sm font-light">
-                                    For its bustling nightlife
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img13.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Brampton, Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3  py-2 px-3 hover:bg-gray-100  hover:rounded-lg">
-                                <Image
-                                  src="/searchbar-image/img14.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Calgary,Canada</h3>
-                                  <p className="text-sm font-light">
-                                    Known for its skiing
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img15.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Edmonton, Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For sights like west Edmonton Mall
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg">
-                                <Image
-                                  src="/searchbar-image/img16.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Ottawa, Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img17.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">
-                                    Salford,United Kingdom
-                                  </h3>
-                                  <p className="text-sm font-light">
-                                    A hidden gem
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img18.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Halifax, Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img19.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Hamilton,Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                            <FormControl>
-                              <div className="flex items-center gap-3 py-2 px-3 mb-4 hover:bg-gray-100  hover:rounded-lg ">
-                                <Image
-                                  src="/searchbar-image/img20.png"
-                                  width={60}
-                                  height={100}
-                                  alt="Picture of the author"
-                                />
-                                <div className="flex flex-col gap-0.5">
-                                  <h3 className="text-sm">Regina, Canada</h3>
-                                  <p className="text-sm font-light">
-                                    For a trip abroad
-                                  </p>
-                                </div>
-                              </div>
-                            </FormControl>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                  </DropdownMenuContent>
-                </DropdownMenuPortal>
-              </DropdownMenu>
+            <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full relative">
+              <LocationSelect />
             </div>
             {type === "stays" ? (
               <>
-                <div className="w-full hover:bg-gray-400/30 h-full px-10 rounded-full ">
+                <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full ">
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger className="w-full h-full border-none">
                       <DropdownMenuLabel className="flex items-center justify-center">
@@ -439,7 +80,7 @@ const NavSearch = ({ type }: { type: string }) => {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent
-                      className=" w-[51rem] h-[29rem]   z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-32rem]  bg-white 
+                      className=" w-[51rem] h-[29rem]   z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-32rem]  bg-white
                         "
                       onPointerDownOutside={(e) => {
                         console.log("Clicked outside", e);
@@ -452,7 +93,7 @@ const NavSearch = ({ type }: { type: string }) => {
                           <FormItem className="px-2  overflow-y-scroll scrollbar h-[410px]">
                             <section className=" ">
                               <section className="grid mt-3 gap-4 place-items-center  h-[410px]">
-                                <div className="rounded-full flex gap-3 justify-between items-center text-sm font-semibold bg-gray-400/30 py-1 w-[280px] px-1">
+                                <div className="rounded-full flex gap-3 justify-between items-center text-sm font-semibold bg-gray-400/10 py-1 w-[280px] px-1">
                                   {list.map((d, index) => {
                                     return (
                                       <div key={index}>
@@ -460,7 +101,7 @@ const NavSearch = ({ type }: { type: string }) => {
                                           className={
                                             option === d
                                               ? "rounded-full bg-white py-2 px-5 "
-                                              : " py-2 px-5 hover:bg-gray-400/30 hover:rounded-full"
+                                              : " py-2 px-5 hover:bg-gray-400/10 hover:rounded-full"
                                           }
                                           onClick={() => setOption(d)}
                                         >
@@ -507,7 +148,7 @@ const NavSearch = ({ type }: { type: string }) => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-                <div className="w-full hover:bg-gray-400/30 h-full px-10 rounded-full ">
+                <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full ">
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger className="w-full h-full border-none">
                       <DropdownMenuLabel className="flex items-center justify-center">
@@ -516,7 +157,7 @@ const NavSearch = ({ type }: { type: string }) => {
                       </DropdownMenuLabel>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                      className=" w-[51rem] h-[29rem]  bg-white z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-19rem]  
+                      className=" w-[51rem] h-[29rem]  bg-white z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-19rem]
                        scrollbar "
                       onPointerDownOutside={(e) => {
                         console.log("Clicked outside", e);
@@ -529,7 +170,7 @@ const NavSearch = ({ type }: { type: string }) => {
                           <FormItem className="px-2  overflow-y-scroll scrollbar h-[410px]">
                             <section className=" ">
                               <section className="grid mt-3 gap-4 place-items-center  h-[410px]">
-                                <div className="rounded-full flex gap-3 justify-between items-center text-sm font-semibold bg-gray-400/30 py-1 w-[280px] px-1">
+                                <div className="rounded-full flex gap-3 justify-between items-center text-sm font-semibold bg-gray-400/10 py-1 w-[280px] px-1">
                                   {list.map((d, index) => {
                                     return (
                                       <div key={index}>
@@ -587,7 +228,7 @@ const NavSearch = ({ type }: { type: string }) => {
               </>
             ) : (
               <>
-                <div className="w-full hover:bg-gray-400/30 h-full px-10 rounded-full cursor-pointer">
+                <div className="w-full hover:bg-gray-400/10 h-full px-10 rounded-full cursor-pointer">
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger className="w-full h-full border-none">
                       <DropdownMenuLabel className="flex items-center justify-center">
@@ -612,7 +253,7 @@ const NavSearch = ({ type }: { type: string }) => {
                 </div>
               </>
             )}
-            <div className="w-full hover:bg-gray-400/30 h-full px-10 rounded-full ">
+            <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full ">
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger className="w-full h-full border-none cursor-pointer">
                   <DropdownMenuLabel className="flex items-center justify-center gap-x-1">
@@ -621,7 +262,7 @@ const NavSearch = ({ type }: { type: string }) => {
                   </DropdownMenuLabel>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className=" w-[25rem] h-[23rem]  bg-white z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-7rem]  
+                  className=" w-[25rem] h-[23rem]  bg-white z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-7rem]
                        scrollbar "
                   onPointerDownOutside={(e) => {
                     console.log("Clicked outside", e);
@@ -644,7 +285,12 @@ const NavSearch = ({ type }: { type: string }) => {
 
                               <div>
                                 <div className="flex items-center justify-between gap-3 ">
-                                  <button className={adults <= 1 ? "cursor-not-allowed" : "hover:border-black"}
+                                  <button
+                                    className={
+                                      adults <= 1
+                                        ? "cursor-not-allowed"
+                                        : "hover:border-black"
+                                    }
                                     onClick={() =>
                                       adults >= 2 ? setAdults(adults - 1) : null
                                     }
@@ -660,7 +306,6 @@ const NavSearch = ({ type }: { type: string }) => {
                                         size={34}
                                         color="#cecece"
                                         strokeWidth={0.9}
-                                        
                                         className="hover:border-black"
                                       />
                                     )}
@@ -675,14 +320,19 @@ const NavSearch = ({ type }: { type: string }) => {
                                         : setAdults(adults + 1)
                                     }
                                   >
-                                   {adults + children == totalGuest ?  <CirclePlus
-                                      size={34}
-                                      color="#cecece"
-                                      strokeWidth={0.3}   /> :  <CirclePlus
-                                      size={34}
-                                      color="#cecece"
-                                      strokeWidth={0.9} />
-                                    }   
+                                    {adults + children == totalGuest ? (
+                                      <CirclePlus
+                                        size={34}
+                                        color="#cecece"
+                                        strokeWidth={0.3}
+                                      />
+                                    ) : (
+                                      <CirclePlus
+                                        size={34}
+                                        color="#cecece"
+                                        strokeWidth={0.9}
+                                      />
+                                    )}
                                   </button>
                                 </div>
                               </div>
@@ -703,15 +353,19 @@ const NavSearch = ({ type }: { type: string }) => {
                                       : null
                                   }
                                 >
-                                  {children <=0 ? <CircleMinus
-                                    size={34}
-                                    color="#cecece"
-                                    strokeWidth={0.3}
-                                  /> : <CircleMinus
-                                    size={34}
-                                    color="#cecece"
-                                    strokeWidth={0.9}
-                                  />}
+                                  {children <= 0 ? (
+                                    <CircleMinus
+                                      size={34}
+                                      color="#cecece"
+                                      strokeWidth={0.3}
+                                    />
+                                  ) : (
+                                    <CircleMinus
+                                      size={34}
+                                      color="#cecece"
+                                      strokeWidth={0.9}
+                                    />
+                                  )}
                                 </button>
                                 <p className="text-[17px] font-normal  w-5 text-center">
                                   {children}
@@ -723,14 +377,19 @@ const NavSearch = ({ type }: { type: string }) => {
                                       : setChildren(children + 1)
                                   }
                                 >
-                                  {adults + children == totalGuest ?  <CirclePlus
-                                  size={34}
-                                  color="#cecece"
-                                  strokeWidth={0.3}/>:  <CirclePlus
-                                  size={34}
-                                  color="#cecece"
-                                  strokeWidth={0.9}/>} 
-                                 
+                                  {adults + children == totalGuest ? (
+                                    <CirclePlus
+                                      size={34}
+                                      color="#cecece"
+                                      strokeWidth={0.3}
+                                    />
+                                  ) : (
+                                    <CirclePlus
+                                      size={34}
+                                      color="#cecece"
+                                      strokeWidth={0.9}
+                                    />
+                                  )}
                                 </button>
                               </div>
                             </article>
@@ -801,7 +460,7 @@ const NavSearch = ({ type }: { type: string }) => {
                             <article className="flex items-center justify-between pt-3 ">
                               <div>
                                 <h3>Pets</h3>
-                                <p className="text-sm font-light underline text-gray-500/95 cursor-pointer ">
+                                <p className="text-sm font-semibold  underline text-gray-500/95 cursor-pointer ">
                                   Bringing a service animal?
                                 </p>
                               </div>
