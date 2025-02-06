@@ -1,7 +1,19 @@
 import { z } from "zod";
 
-const searchSchemaWithDate = z.object({
+export const destinationSchema = z.object({
   destination: z.string(),
+});
+
+export const checkInSchema = z.object({
+  checkIn: z.date(),
+});
+
+export const checkOutSchema = z.object({
+  checkOut: z.date(),
+});
+
+const searchSchemaWithDate = z.object({
+  ...destinationSchema.shape,
   date: z.date(),
   who: z.enum(["children", "adults", "infants", "pets"]),
 });

@@ -1,55 +1,41 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
-import LocationSelect from "../customComponents/bookingFilter/locationSelect";
+import LocationSelect from "../customComponents/bookingFilter/location/locationSelect";
 
-import {
-  Form,
-  FormItem,
-  FormLabel,
-  FormField,
-  FormControl,
-} from "@/components/ui/form";
+import { Form, FormItem, FormField, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuLabel,
-  DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  SearchIcon,
-  MapPinHouseIcon,
-  Calendar1Icon,
-  User2Icon,
-  CirclePlus,
-  CircleMinus,
-} from "lucide-react";
+import { SearchIcon, CirclePlus, CircleMinus, User2Icon } from "lucide-react";
 
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
 import { searchSchema } from "../../lib/definitions";
 
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CheckIn from "../customComponents/bookingFilter/checkin/checkin";
+import CheckOut from "../customComponents/bookingFilter/chckout/checkout";
 
 const NavSearch = ({ type }: { type: string }) => {
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
   });
 
-  const [option, setOption] = useState("Dates");
+  // const [option, setOption] = useState("Dates");
 
-  const list = ["Dates", "Months", "Flexible"];
-  const days = ["Exact dates", "1 day", "2 day", "3 day", "7 day", "14 day"];
+  // const list = ["Dates", "Months", "Flexible"];
+  // const days = ["Exact dates", "1 day", "2 day", "3 day", "7 day", "14 day"];
 
-  const [moreOptions, setMoreOptions] = useState("Exact dates");
+  // const [moreOptions, setMoreOptions] = useState("Exact dates");
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -57,9 +43,6 @@ const NavSearch = ({ type }: { type: string }) => {
   const [pets, setPets] = useState(0);
 
   const totalGuest = 16;
-
-  const [selected, setSelected] = useState<Date[] | undefined>();
-
   return (
     <div className="mx-auto relative  lg:min-w-[850px] xs:max-w-full lg:max-w-[900px]  z-[100000000%] ">
       <Form {...form}>
@@ -71,185 +54,16 @@ const NavSearch = ({ type }: { type: string }) => {
             {type === "stays" ? (
               <>
                 <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full ">
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger className="w-full h-full border-none">
-                      <DropdownMenuLabel className="flex items-center justify-center">
-                        <Calendar1Icon />
-                        <p>Check in</p>
-                      </DropdownMenuLabel>
-                    </DropdownMenuTrigger>
-
-                    <DropdownMenuContent
-                      className=" w-[51rem] h-[29rem]   z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-32rem]  bg-white
-                        "
-                      onPointerDownOutside={(e) => {
-                        console.log("Clicked outside", e);
-                      }}
-                    >
-                      <FormField
-                        name="destination"
-                        control={form.control}
-                        render={({ field }) => (
-                          <FormItem className="px-2  overflow-y-scroll scrollbar h-[410px]">
-                            <section className=" ">
-                              <section className="grid mt-3 gap-4 place-items-center  h-[410px]">
-                                <div className="rounded-full flex gap-3 justify-between items-center text-sm font-semibold bg-gray-400/10 py-1 w-[280px] px-1">
-                                  {list.map((d, index) => {
-                                    return (
-                                      <div key={index}>
-                                        <button
-                                          className={
-                                            option === d
-                                              ? "rounded-full bg-white py-2 px-5 "
-                                              : " py-2 px-5 hover:bg-gray-400/10 hover:rounded-full"
-                                          }
-                                          onClick={() => setOption(d)}
-                                        >
-                                          {d}
-                                        </button>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                <div>
-                                  <div className="">
-                                    <DayPicker
-                                      mode="range"
-                                      selected={selected}
-                                      onSelect={setSelected}
-                                      numberOfMonths={2}
-                                      disabled={{ before: new Date() }}
-                                    />
-                                  </div>
-                                </div>
-                              </section>
-                              <div className="flex mt-3 gap-3 px-16">
-                                {days.map((day, index) => {
-                                  return (
-                                    <div key={index}>
-                                      <button
-                                        className={
-                                          moreOptions === day
-                                            ? "flex px-3 border py-1 rounded-full border-black hover:bg-gray-400/30"
-                                            : "flex px-3 border py-1 rounded-full  hover:bg-gray-400/30"
-                                        }
-                                        onClick={() => setMoreOptions(day)}
-                                      >
-                                        {day}
-                                      </button>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </section>
-                          </FormItem>
-                        )}
-                      />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <CheckIn />
                 </div>
                 <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full ">
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger className="w-full h-full border-none">
-                      <DropdownMenuLabel className="flex items-center justify-center">
-                        <Calendar1Icon />
-                        <p>Check out</p>
-                      </DropdownMenuLabel>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      className=" w-[51rem] h-[29rem]  bg-white z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-19rem]
-                       scrollbar "
-                      onPointerDownOutside={(e) => {
-                        console.log("Clicked outside", e);
-                      }}
-                    >
-                      <FormField
-                        name="destination"
-                        control={form.control}
-                        render={({ field }) => (
-                          <FormItem className="px-2  overflow-y-scroll scrollbar h-[410px]">
-                            <section className=" ">
-                              <section className="grid mt-3 gap-4 place-items-center  h-[410px]">
-                                <div className="rounded-full flex gap-3 justify-between items-center text-sm font-semibold bg-gray-400/10 py-1 w-[280px] px-1">
-                                  {list.map((d, index) => {
-                                    return (
-                                      <div key={index}>
-                                        <button
-                                          className={
-                                            option === d
-                                              ? "rounded-full bg-white py-2 px-5 "
-                                              : " py-2 px-5 hover:bg-gray-400/30 hover:rounded-full"
-                                          }
-                                          onClick={() => setOption(d)}
-                                        >
-                                          {d}
-                                        </button>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                <div>
-                                  <div className="">
-                                    <DayPicker
-                                      mode="range"
-                                      selected={selected}
-                                      onSelect={setSelected}
-                                      numberOfMonths={2}
-                                      disabled={{ before: new Date() }}
-                                    />
-                                  </div>
-                                </div>
-                              </section>
-                              <div className="flex mt-3 gap-3 px-16">
-                                {days.map((day, index) => {
-                                  return (
-                                    <div key={index}>
-                                      <button
-                                        className={
-                                          moreOptions === day
-                                            ? "flex px-3 border py-1 rounded-full border-black hover:bg-gray-400/30"
-                                            : "flex px-3 border py-1 rounded-full  hover:bg-gray-400/30"
-                                        }
-                                        onClick={() => setMoreOptions(day)}
-                                      >
-                                        {day}
-                                      </button>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </section>
-                          </FormItem>
-                        )}
-                      />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <CheckOut />
                 </div>
               </>
             ) : (
               <>
                 <div className="w-full hover:bg-gray-400/10 h-full px-10 rounded-full cursor-pointer">
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger className="w-full h-full border-none">
-                      <DropdownMenuLabel className="flex items-center justify-center">
-                        <Calendar1Icon />
-                        <p>Check in</p>
-                      </DropdownMenuLabel>
-                      <DropdownMenuContent className="border-none w-full">
-                        <FormField
-                          name="destination"
-                          control={form.control}
-                          render={({ field }) => (
-                            <FormItem className=" w-full min-h-full flex items-center ">
-                              <FormControl>
-                                <Input {...field} />
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        />
-                      </DropdownMenuContent>
-                    </DropdownMenuTrigger>
-                  </DropdownMenu>
+                  <CheckIn />
                 </div>
               </>
             )}
