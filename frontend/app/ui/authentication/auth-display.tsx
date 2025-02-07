@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import Authentication from "./authentication";
 import { useAppContext } from "@/app/utils/context";
 
-const AuthDisplay = () => {
+const ModalDisplay = () => {
   const { authModal } = useAppContext();
 
   return (
@@ -14,4 +14,4 @@ const AuthDisplay = () => {
   );
 };
 
-export default AuthDisplay;
+export default ModalDisplay;

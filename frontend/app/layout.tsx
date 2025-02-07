@@ -5,8 +5,8 @@ import Navbar from "./ui/navbar";
 import Footer from "./ui/footer";
 import ReduxProvider from "./redux/provider";
 
-import AppContextProvider from "./utils/context";
-import AuthDisplay from "./ui/authentication/auth-display";
+import ModalProvider from "./utils/context";
+import Modals from "./customComponents/modals/modals";
 
 export const metadata: Metadata = {
   title: {
@@ -24,17 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReduxProvider>
-        <AppContextProvider>
+        <ModalProvider>
+          <Modals />
           <body className={`${manRope.className}   text-black antialiased    `}>
             <div className={`max-w-[150rem] mx-auto px-6  `}>
               <Navbar />
-              <AuthDisplay />
               {children}
             </div>
 
             <Footer />
           </body>
-        </AppContextProvider>
+        </ModalProvider>
       </ReduxProvider>
     </html>
   );

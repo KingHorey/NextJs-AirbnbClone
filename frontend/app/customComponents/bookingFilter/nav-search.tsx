@@ -2,7 +2,7 @@
 
 import React, { use, useEffect, useState } from "react";
 
-import LocationSelect from "../customComponents/bookingFilter/location/locationSelect";
+import LocationSelect from "./location/locationSelect";
 
 import { Form, FormItem, FormField, FormControl } from "@/components/ui/form";
 import {
@@ -16,16 +16,16 @@ import { SearchIcon, User2Icon } from "lucide-react";
 
 import "react-day-picker/style.css";
 
-import { searchSchema } from "../../lib/definitions";
+import { searchSchema } from "../../../lib/definitions";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import CheckIn from "../customComponents/bookingFilter/checkin/checkin";
-import CheckOut from "../customComponents/bookingFilter/chckout/checkout";
+import CheckIn from "./checkin/checkin";
+import CheckOut from "./chckout/checkout";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { RootState } from "../../redux/store";
 import { Button } from "@/components/ui/button";
 
 const NavSearch = ({ type }: { type: string }) => {

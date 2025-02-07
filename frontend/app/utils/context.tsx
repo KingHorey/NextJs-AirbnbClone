@@ -1,33 +1,54 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { se } from "date-fns/locale";
+import React, { createContext, useContext, useState } from "react";
 
-interface AppContextType {
-  authModal: boolean;
-  toggleAuthModal: (value: boolean) => void;
+interface ModalContextType {
+  isOpen: boolean;
+  content: React.ReactNode;
+  openModal: (content: React.ReactNode, title?: string) => void;
+  closeModal: () => void;
+  title?: string;
 }
 
-export const AppContext = createContext<AppContextType | undefined>(undefined);
+export const ModalContext = createContext<ModalContextType | undefined>(
+  undefined
+);
 
-export const useAppContext = () => {
-  const context = useContext(AppContext);
+export const useModalContext = () => {
+  const context = useContext(ModalContext);
   if (!context) {
-    throw new Error("useAppContext must be used within an AppContextProvider");
+    throw new Error("useModalContext must be used within an ModalProvider");
   }
   return context;
 };
 
-
-export default function AppContextProvider({
+export default function ModalProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [authModal, toggleAuthModal] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [content, setContent] = useState<React.ReactNode>(null);
+  const [title, setTitle] = useState<string | undefined>("");
+
+  const openModal = (content: React.ReactNode, title?: string) => {
+    setTitle(title);
+    setContent(content);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setTitle("");
+    setIsOpen(false);
+    setContent(null);
+  };
 
   return (
-    <AppContext.Provider value={{ authModal, toggleAuthModal }}>
+    <ModalContext.Provider
+      value={{ isOpen, content, openModal, closeModal, title }}
+    >
       {children}
-    </AppContext.Provider>
+    </ModalContext.Provider>
   );
 }

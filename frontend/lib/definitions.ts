@@ -1,3 +1,4 @@
+import { Amethysta } from "next/font/google";
 import { z } from "zod";
 
 export const destinationSchema = z.object({
@@ -36,4 +37,20 @@ export const authSchema = z.object({
   phone_number: z.string().refine((v) => /^\d{10,15}$/.test(v), {
     message: "Phone number must be numeric and between 10 to 15 digits.",
   }),
+});
+
+export const filterSchema = z.object({
+  rooms: z.number().optional(),
+  guests: z.number().optional(),
+  bedrooms: z.number().optional(),
+  beds: z.number().optional(),
+  price: z.object({
+    min: z.number().optional(),
+    max: z.number().optional(),
+  }),
+  rating: z.number().optional(),
+  type: z.enum(["entire", "private", "shared"]).optional(),
+  amenities: z.array(z.string()).optional(),
+  location: z.string().optional(),
+  booking_type: z.enum(["instant", "request"]).optional(),
 });
