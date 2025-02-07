@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const destinationSchema = z.object({
-  destination: z.string(),
+  destination: z.string().optional(),
 });
 
 export const checkInSchema = z.object({
@@ -14,16 +14,16 @@ export const checkOutSchema = z.object({
 
 const searchSchemaWithDate = z.object({
   ...destinationSchema.shape,
-  date: z.date(),
-  who: z.enum(["children", "adults", "infants", "pets"]),
+  date: z.string().optional(),
+  who: z.enum(["children", "adults", "infants", "pets"]).optional(),
 });
 
 const searchSchemaWithCheckIn = z.object({
-  destination: z.string(),
-  date: z.date(),
-  checkIn: z.date(),
-  checkOut: z.date(),
-  who: z.enum(["children", "adults", "infants", "pets"]),
+  destination: z.string().optional(),
+  date: z.date().optional(),
+  checkIn: z.string().optional(),
+  checkOut: z.string().optional(),
+  who: z.enum(["children", "adults", "infants", "pets"]).optional(),
 });
 
 export const searchSchema = z.union([

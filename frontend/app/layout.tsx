@@ -3,6 +3,7 @@ import { manRope } from "./utils/font";
 import "./globals.css";
 import Navbar from "./ui/navbar";
 import Footer from "./ui/footer";
+import ReduxProvider from "./redux/provider";
 
 import AppContextProvider from "./utils/context";
 import AuthDisplay from "./ui/authentication/auth-display";
@@ -20,21 +21,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
-    <html lang="en" >
-      <AppContextProvider>
-        <body className={`${manRope.className}   text-black antialiased    `}
-        >
-          <div className={`max-w-[150rem] mx-auto px-6  `}>
-          <Navbar />
-          <AuthDisplay />
-          {children}
-          </div>
-          
-          <Footer />
-        </body>
-      </AppContextProvider>
+    <html lang="en">
+      <ReduxProvider>
+        <AppContextProvider>
+          <body className={`${manRope.className}   text-black antialiased    `}>
+            <div className={`max-w-[150rem] mx-auto px-6  `}>
+              <Navbar />
+              <AuthDisplay />
+              {children}
+            </div>
+
+            <Footer />
+          </body>
+        </AppContextProvider>
+      </ReduxProvider>
     </html>
   );
 }

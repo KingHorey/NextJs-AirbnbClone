@@ -13,24 +13,38 @@ import {
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { checkOutSchema } from "@/lib/definitions";
-import { z } from "zod";
+import { UseFormReturn } from "react-hook-form";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
 import { DayPicker, DateRange } from "react-day-picker";
+import {
+  addCheckIn,
+  addCheckOut,
+} from "@/app/redux/reducers/bookingFilterReducer/bookingFilterReducer";
+import { RootState } from "@/app/redux/store";
+import { useDispatch, useSelector } from "react-redux";
 
-const CheckOut = () => {
+const CheckOut = ({ form }: { form: UseFormReturn }) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>(undefined);
 
-  const form = useForm<z.infer<typeof checkOutSchema>>({
-    resolver: zodResolver(checkOutSchema),
-    defaultValues: {
-      checkOut: undefined,
-    },
-  });
+  const dispatch = useDispatch();
+  const checkSelector = useSelector((state: RootState) => state.bookingFilter);
+
+  function updateCheckOut(x: DateRange) {
+    if (!x) {
+      dispatch(addCheckOut(""));
+      setDate(undefined);
+      return;
+    }
+    dispatch(addCheckOut(x.to?.toLocaleDateString()));
+    form.setValue(
+      "checkIn",
+      checkSelector.checkOut || x?.to?.toLocaleDateString()
+    );
+    setDate(x);
+  }
+
   return (
     <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
       <Trigger>
@@ -41,8 +55,8 @@ const CheckOut = () => {
             placeholder="Add dates"
             name="checkOut"
             form={form as any}
-            data={date}
-            updateData={setDate}
+            data={checkSelector.checkOut || date}
+            updateData={updateCheckOut}
           />
         </div>
       </Trigger>
@@ -57,8 +71,9 @@ const CheckOut = () => {
           <div className="flex justify-center items-center h-full">
             <DayPicker
               mode="range"
+              required
               selected={date}
-              onSelect={setDate}
+              onSelect={updateCheckOut}
               numberOfMonths={2}
               disabled={{ before: new Date() }}
             />
