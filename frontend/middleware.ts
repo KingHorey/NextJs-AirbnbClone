@@ -1,17 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { handleTokenRefresh } from "./app/utils/handleTokenRefresh";
-
-export const myAxios = axios.create({
-  baseURL: process.env.NEXT_BASE_URL || "http://localhost:8000/api",
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-});
+import { handleTokenRefresh } from "./app/utilities/handleTokenRefresh";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;

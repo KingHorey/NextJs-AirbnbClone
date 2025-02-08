@@ -8,7 +8,7 @@ import { GlobeIcon, Scale } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // custom user context
-import { useModalContext } from "@/app/utils/context";
+import { useModalContext } from "@/app/utilities/context";
 
 import {
   DropdownMenu,

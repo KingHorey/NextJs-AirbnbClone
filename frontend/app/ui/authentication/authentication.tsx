@@ -12,10 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { useCustomForm } from "@/app/utils/customForm";
+import { useCustomForm } from "@/app/utilities/customForm";
 import { authSchema } from "@/lib/definitions";
 
+import z from "zod";
+import { reqFlow } from "@/app/utilities/api/axiosInstance";
+
 import { EyeClosedIcon, EyeIcon } from "lucide-react";
+import { handleLoginToken } from "@/app/utilities/utils";
 
 /* might be needed for future implementation
 import PhoneInput from "react-phone-input-2";
@@ -27,11 +31,18 @@ const Authentication = () => {
 
   const form = useCustomForm(authSchema, { email: "", password: "" });
 
+  async function handleSubmit(e: z.infer<typeof authSchema>) {
+    const response = await reqFlow("/token/", "POST", e);
+    handleLoginToken(response);
+
+    alert("Successfully logged in");
+  }
+
   return (
     <div className="overflow-scroll p-5 space-y-5">
       {/* <p className="font-bold text-lg">Welcome to AirBnb</p> */}
       <Form {...form}>
-        <form className="space-y-3">
+        <form className="space-y-3" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
             control={form.control}
             name="email"

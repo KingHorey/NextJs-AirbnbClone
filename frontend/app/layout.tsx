@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { manRope } from "./utils/font";
+import { manRope } from "./utilities/font";
 import "./globals.css";
 import Navbar from "./ui/navbar";
 import Footer from "./ui/footer";
 import ReduxProvider from "./redux/provider";
 
-import ModalProvider from "./utils/context";
+import ModalProvider from "./utilities/context";
 import Modals from "./customComponents/modals/modals";
 
 export const metadata: Metadata = {
