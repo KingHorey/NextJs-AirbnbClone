@@ -73,6 +73,11 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  .rdp-selected .rdp-day_button {
+    background-color: black !important;
+    color: var(--foreground);
+  }
 }
 
 @layer utilities {
@@ -92,7 +97,6 @@ body {
   .scrollbar::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 8px;
-    
   }
 
   /* Handle on hover */
@@ -103,6 +107,5 @@ body {
   .scrollbar::-webkit-scrollbar-track {
     margin-top: 10px;
     margin-bottom: 10px;
-    
   }
 }

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  HeartIcon,
-  ChevronRightIcon,
-  ChevronLeftIcon,
-  StarIcon,
-} from "lucide-react";
+import { HeartIcon, ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 const Properties = () => {
@@ -35,7 +30,6 @@ const Properties = () => {
       <Link href="#" className="select-none">
         <div className="flex justify-between">
           <h2 className="font-semibold">Aso Rock, Abuja</h2>
-          <StarIcon />
         </div>
         <p>Added 9 weeks ago</p>
         <p>Feb 19-24</p>

@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
-import LocationSelect from "../customComponents/bookingFilter/location/locationSelect";
+import LocationSelect from "./location/locationSelect";
 
 import { Form, FormItem, FormField, FormControl } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,22 +12,42 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 
-import { SearchIcon, CirclePlus, CircleMinus, User2Icon } from "lucide-react";
+import { SearchIcon, User2Icon } from "lucide-react";
 
 import "react-day-picker/style.css";
 
-import { searchSchema } from "../../lib/definitions";
+import { searchSchema } from "../../../lib/definitions";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import CheckIn from "../customComponents/bookingFilter/checkin/checkin";
-import CheckOut from "../customComponents/bookingFilter/chckout/checkout";
+import CheckIn from "./checkin/checkin";
+import CheckOut from "./chckout/checkout";
+
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { Button } from "@/components/ui/button";
 
 const NavSearch = ({ type }: { type: string }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const select = useSelector((state: RootState) => state.bookingFilter);
+  // console.log("Selector data: ", select);
+
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
+    defaultValues: {
+      destination: select.destination,
+      checkIn: select.checkIn,
+      checkOut: select.checkOut,
+    },
   });
+
+  form.watch("checkIn");
+  form.watch("checkOut");
+
+  const submitForm = (e: z.infer<typeof searchSchema>) => {
+    console.log(e);
+  };
 
   // const [option, setOption] = useState("Dates");
 
@@ -36,6 +55,10 @@ const NavSearch = ({ type }: { type: string }) => {
   // const days = ["Exact dates", "1 day", "2 day", "3 day", "7 day", "14 day"];
 
   // const [moreOptions, setMoreOptions] = useState("Exact dates");
+
+  // useEffect(() => {
+  //   console.log("Form data: ", form);
+  // }, [form]);
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -46,24 +69,27 @@ const NavSearch = ({ type }: { type: string }) => {
   return (
     <div className="mx-auto relative  lg:min-w-[850px] xs:max-w-full lg:max-w-[900px]  z-[100000000%] ">
       <Form {...form}>
-        <form className="w-full rounded-full hover:shadow-md transition-all duration-300 h-[70px]  grid border px-0 overflow-hidden shadow-lg">
+        <form
+          className="w-full rounded-full hover:shadow-md transition-all duration-300 h-[70px]  grid border px-0 overflow-hidden shadow-lg"
+          onSubmit={form.handleSubmit(submitForm)}
+        >
           <div className=" min-h-full w-full flex items-center px-0  gap-x-2">
             <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full relative">
-              <LocationSelect />
+              <LocationSelect form={form} />
             </div>
             {type === "stays" ? (
               <>
                 <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full ">
-                  <CheckIn />
+                  <CheckIn form={form} />
                 </div>
                 <div className="w-full hover:bg-gray-400/10 h-full px-0 rounded-full ">
-                  <CheckOut />
+                  <CheckOut form={form} />
                 </div>
               </>
             ) : (
               <>
                 <div className="w-full hover:bg-gray-400/10 h-full px-10 rounded-full cursor-pointer">
-                  <CheckIn />
+                  <CheckIn form={form} />
                 </div>
               </>
             )}
@@ -78,11 +104,8 @@ const NavSearch = ({ type }: { type: string }) => {
                 <DropdownMenuContent
                   className=" w-[25rem] h-[23rem]  bg-white z-[10000] border shadow-lg mt-2 rounded-3xl absolute right-[-7rem]
                        scrollbar "
-                  onPointerDownOutside={(e) => {
-                    console.log("Clicked outside", e);
-                  }}
                 >
-                  <FormField
+                  {/* <FormField
                     name="destination"
                     control={form.control}
                     render={({ field }) => (
@@ -335,13 +358,13 @@ const NavSearch = ({ type }: { type: string }) => {
                         </FormControl>
                       </FormItem>
                     )}
-                  />
+                  /> */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="bg-red p-3 rounded-full absolute right-5 cursor-pointer">
+            <Button className="bg-red p-3 rounded-full absolute right-5 cursor-pointer">
               <SearchIcon stroke="white" />
-            </div>
+            </Button>
           </div>
         </form>
       </Form>

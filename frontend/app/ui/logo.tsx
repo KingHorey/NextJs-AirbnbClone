@@ -3,7 +3,7 @@ const AirBnbLogo = () => {
     <svg
       width="30"
       height="32"
-      style={{ display: "block;" }}
+      style={{ display: "block" }}
       className="hover:stroke-red, hover:text-red duration-300 transition-all md:text-gray-700 lg:text-red cursor-pointer"
     >
       <path

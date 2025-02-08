@@ -8,7 +8,7 @@ import { GlobeIcon, Scale } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // custom user context
-import { useAppContext } from "@/app/utils/context";
+import { useModalContext } from "@/app/utils/context";
 
 import {
   DropdownMenu,
@@ -21,18 +21,19 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Menu } from "lucide-react";
-import NavSearch from "./nav-search";
+import NavSearch from "../customComponents/bookingFilter/nav-search";
 import Shortnavbar from "./short-navbar";
+import Authentication from "./authentication/authentication";
 
 const Navbar = () => {
   const [filters, setFilters] = useState<string>("stays");
   const pathname = usePathname();
 
-  const { authModal, toggleAuthModal } = useAppContext();
+  const { openModal } = useModalContext();
 
-  window.onbeforeunload =()=>{
-    window.scrollTo(0,0);
-  }
+  window.onbeforeunload = () => {
+    window.scrollTo(0, 0);
+  };
 
   const paths = ["/", "/rooms"];
   const allowed_paths = paths.includes(pathname);
@@ -63,16 +64,15 @@ const Navbar = () => {
               </Link>
             </div>
             <motion.article
-            animate={
-              {
-                scale: position <= 1 ? 1 : 0
-              }
-            }
-            transition={{
-              duration: 0.8,
-              delay: 0.5,
-              ease: [0, 0.71, 0.2, 1.01],
-            }}>
+              animate={{
+                scale: position <= 1 ? 1 : 0,
+              }}
+              transition={{
+                duration: 0.8,
+                delay: 0.5,
+                ease: [0, 0.71, 0.2, 1.01],
+              }}
+            >
               {allowed_paths && (
                 <article className="">
                   <div>
@@ -130,13 +130,17 @@ const Navbar = () => {
                         <ul className="flex flex-col space-y-3">
                           <li
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
-                            onClick={() => toggleAuthModal(true)}
+                            onClick={() =>
+                              openModal(<Authentication />, "Login or Sign up")
+                            }
                           >
                             Login
                           </li>
                           <li
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
-                            onClick={() => toggleAuthModal(true)}
+                            onClick={() =>
+                              openModal(<Authentication />, "Login or Sign up")
+                            }
                           >
                             Sign Up
                           </li>
@@ -177,33 +181,31 @@ const Navbar = () => {
           </nav>
           {allowed_paths && (
             <motion.div
-            animate={
-              {
-                scale: position <= 1 ? 1 : 0
-              }
-            }
-            transition={{
-              duration: 0.8,
-              delay: 0.5,
-              ease: [0, 0.71, 0.2, 1.01],
-            }}
+              animate={{
+                scale: position <= 1 ? 1 : 0,
+              }}
+              transition={{
+                duration: 0.8,
+                delay: 0.5,
+                ease: [0, 0.71, 0.2, 1.01],
+              }}
             >
               <NavSearch type={filters} />
             </motion.div>
           )}
         </header>
       ) : (
-        <motion.header  animate={
-          {
-            scale: position <= 1 ? 0 :1
-          }
-        }
-        transition={{
-          duration: 0.8,
-          delay: 10.5,
-          ease: [0, 0.71, 0.2, 1.01],
-        }} 
-        className="sticky top-0  pb-5  z-[999] border-b border-black/10 bg-white  mx-auto px-3  ">
+        <motion.header
+          animate={{
+            scale: position <= 1 ? 0 : 1,
+          }}
+          transition={{
+            duration: 0.8,
+            delay: 10.5,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+          className="sticky top-0  pb-5  z-[999] border-b border-black/10 bg-white  mx-auto px-3  "
+        >
           <nav className="flex items-center  justify-between w-[100%] ">
             <div className="">
               <Link
@@ -216,10 +218,7 @@ const Navbar = () => {
                 </p>
               </Link>
             </div>
-            <motion.article
-             
-            
-            >
+            <motion.article>
               <Shortnavbar />
             </motion.article>
 
@@ -250,13 +249,13 @@ const Navbar = () => {
                         <ul className="flex flex-col space-y-3">
                           <li
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
-                            onClick={() => toggleAuthModal(true)}
+                            onClick={() => toggleModal(true)}
                           >
                             Login
                           </li>
                           <li
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
-                            onClick={() => toggleAuthModal(true)}
+                            onClick={() => toggleModal(true)}
                           >
                             Sign Up
                           </li>
