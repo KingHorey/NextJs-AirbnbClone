@@ -25,7 +25,6 @@ export default function RootLayout({
     <html lang="en">
       <ReduxProvider>
         <ModalProvider>
-          <Modals />
           <body className={`${manRope.className}   text-black antialiased    `}>
             <div className={`max-w-[150rem] mx-auto px-6  `}>
               <Navbar />
@@ -33,6 +32,7 @@ export default function RootLayout({
             </div>
 
             <Footer />
+            <Modals />
           </body>
         </ModalProvider>
       </ReduxProvider>
