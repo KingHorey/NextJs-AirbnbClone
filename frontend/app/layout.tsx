@@ -8,6 +8,8 @@ import ReduxProvider from "./redux/provider";
 import ModalProvider from "./utilities/context";
 import Modals from "./customComponents/modals/modals";
 
+import { ToastContainer } from "react-toastify";
+
 export const metadata: Metadata = {
   title: {
     template: "%s | Airbnb",
@@ -33,6 +35,7 @@ export default function RootLayout({
 
             <Footer />
             <Modals />
+            <ToastContainer />
           </body>
         </ModalProvider>
       </ReduxProvider>

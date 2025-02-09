@@ -21,21 +21,31 @@ import { reqFlow } from "@/app/utilities/api/axiosInstance";
 import { EyeClosedIcon, EyeIcon } from "lucide-react";
 import { handleLoginToken } from "@/app/utilities/utils";
 
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 /* might be needed for future implementation
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 */
 
 const Authentication = () => {
+  const router = useRouter();
   const [revealPassword, setRevealPassword] = useState<boolean>(false);
 
   const form = useCustomForm(authSchema, { email: "", password: "" });
 
   async function handleSubmit(e: z.infer<typeof authSchema>) {
-    const response = await reqFlow("/token/", "POST", e);
-    handleLoginToken(response);
-
-    alert("Successfully logged in");
+    const { status, data } = await reqFlow("/token/", "POST", e);
+    if (status !== 200) {
+      console.log(status, data);
+      toast.error(data.detail);
+      return;
+    }
+    handleLoginToken(data);
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 3000);
+    toast.success("Successfully logged in");
   }
 
   return (
@@ -68,7 +78,7 @@ const Authentication = () => {
                     className="p-5 text-black text-base font-semibold w-full rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                   />
                 </FormControl>
-                <div className="absolute top-8 right-2 z-50">
+                <div className="absolute top-9 right-2 z-50">
                   {!revealPassword ? (
                     <EyeClosedIcon
                       size={20}
@@ -103,6 +113,11 @@ const Authentication = () => {
           </Button>
         </form>
       </Form>
+      <div className="flex items-center gap-x-2">
+        <hr className="flex-1" />
+        <span>or</span>
+        <hr className="flex-1" />
+      </div>
       <div className="flex flex-col space-y-2">
         <Button className="hover:bg-white/70 bg-white transition-all duration-100 text-black hover:text-black border p-5 hover:font-semibold shadow-none">
           Continue with Google

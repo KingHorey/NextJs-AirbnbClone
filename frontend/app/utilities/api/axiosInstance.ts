@@ -33,9 +33,15 @@ export const reqFlow = async (url: string, method: string, data: any) => {
       url,
       data,
     });
-    return response.data;
+    return {
+      status: response.status,
+      data: response.data,
+    };
   } catch (error: any) {
     console.error("API Error:", error.response?.data || error.message);
-    throw error;
+    return {
+      status: error.response.status,
+      data: error.response.data,
+    };
   }
 };
