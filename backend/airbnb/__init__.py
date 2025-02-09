@@ -10,7 +10,7 @@ if not hasattr(settings, 'ENCRYPT_KEY'):
 try:
 	cipher = Fernet(settings.ENCRYPT_KEY.encode())
 except Exception as e:
-    raise(f"Invalid encryption format: {e}")
+    raise(f"Invalid encryption format: {e}") from e
 
 logger = logging.getLogger(__name__)
 __all__ = ('celery_app',)
