@@ -2,7 +2,7 @@ import React from "react";
 import FooterComponent from "./show/[id]/custom-footer";
 import "../../globals.css";
 
-import { manRope } from "@/app/utils/font";
+import { manRope } from "@/app/utilities/font";
 import Navbar from "@/app/ui/navbar";
 
 export default function RootLayout({

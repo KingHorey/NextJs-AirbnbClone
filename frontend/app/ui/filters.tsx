@@ -2,7 +2,7 @@
 
 import React from "react";
 import { SlidersHorizontalIcon } from "lucide-react";
-import { useModalContext } from "../utils/context";
+import { useModalContext } from "../utilities/context";
 import FilterProperty from "../customComponents/filter/filter";
 
 const Filters = () => {

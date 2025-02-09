@@ -75,12 +75,12 @@ const CategoriesFilter = () => {
   return (
     <div className="w-full ">
       <Carousel>
-        <CarouselPrevious className="hover:shadow-md duration-200 transition-all" />
+        <CarouselPrevious className="hover:shadow-md duration-200 transition-all absolute left-[-2%] z-[9999]" />
         <CarouselContent>
           {categories.map(({ image, text }, index: number) => (
             <CarouselItem
               key={index}
-              className="flex flex-col items-center justify-center w-6 h-full sm:basis-20 gap-x-5 cursor-pointer group p-2 lg:basis-36 2xl:basis-26 3xl:basis-32"
+              className="flex flex-col items-center justify-center w-6 h-full sm:basis-20 gap-x-2 cursor-pointer group p-2 lg:basis-20 2xl:basis-26 3xl:basis-28 select-none"
               onClick={() =>
                 selected === text ? setSelected("") : setSelected(text)
               }
@@ -93,7 +93,7 @@ const CategoriesFilter = () => {
                 }`}
               />
               <p
-                className={`group-hover:after:border-b-2 hover:after:border-b-black transition-colors hover:after:inline-block after:left-0 after: ${
+                className={`group-hover:after:border-b-2 hover:after:border-b-black transition-colors hover:after:inline-block after:left-0 select-none text-sm after: ${
                   selected === text ? "text-black" : "text-black/60"
                 } group-hover:text-black duration-100`}
               >

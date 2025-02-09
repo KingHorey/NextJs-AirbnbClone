@@ -8,7 +8,7 @@ import { GlobeIcon, Scale } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // custom user context
-import { useModalContext } from "@/app/utils/context";
+import { useModalContext } from "@/app/utilities/context";
 
 import {
   DropdownMenu,
@@ -47,6 +47,12 @@ const Navbar = () => {
     });
   }, [position]);
 
+  function handleModal(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (pathname.includes("/login") || pathname.includes("/signup")) return;
+    e.preventDefault();
+    openModal(<Authentication />, "Login or Sign up");
+  }
+
   return (
     <>
       {position <= 1 ? (
@@ -78,20 +84,20 @@ const Navbar = () => {
                   <div>
                     <ul className="flex p-5 items-center justify-center text-center gap-x-5">
                       <li
-                        className={`cursor-pointer  rounded-full text-black ${
+                        className={`cursor-pointer  rounded-full p-2 text-black ${
                           filters === "stays"
                             ? "text-black font-semibold"
-                            : "hover:bg-slate-400/10 text-black/60 hover:text-black"
+                            : "hover:bg-slate-400/10 duration-150 text-black/60 hover:text-black"
                         }`}
                         onClick={() => setFilters("stays")}
                       >
                         Stays
                       </li>
                       <li
-                        className={`cursor-pointer rounded-full ${
+                        className={`cursor-pointer rounded-full p-2 ${
                           filters === "experiences"
                             ? "text-black font-semibold"
-                            : "hover:bg-slate-400/10 text-black/60 hover:text-black"
+                            : "hover:bg-slate-400/10 duration-150 text-black/60 hover:text-black"
                         }`}
                         onClick={() => setFilters("experiences")}
                       >
@@ -128,22 +134,22 @@ const Navbar = () => {
                     <DropdownMenuContent className="z-[9999999]  p-0  absolute left-[-13.5rem]  rounded-lg ">
                       <DropdownMenuGroup>
                         <ul className="flex flex-col space-y-3">
-                          <li
+                          <Link
+                            href="/login"
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
-                            onClick={() =>
-                              openModal(<Authentication />, "Login or Sign up")
-                            }
+                            onClick={(e) => handleModal(e)}
                           >
                             Login
-                          </li>
-                          <li
+                          </Link>
+                          <Link
+                            href="/signup"
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
-                            onClick={() =>
-                              openModal(<Authentication />, "Login or Sign up")
-                            }
+                            onClick={(e) => {
+                              handleModal(e);
+                            }}
                           >
                             Sign Up
-                          </li>
+                          </Link>
                         </ul>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />
@@ -247,18 +253,20 @@ const Navbar = () => {
                     <DropdownMenuContent className="z-[9999999]  p-0  absolute left-[-13.5rem]  rounded-lg ">
                       <DropdownMenuGroup>
                         <ul className="flex flex-col space-y-3">
-                          <li
+                          <Link
+                            href="/login"
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
-                            onClick={() => toggleModal(true)}
+                            onClick={(e) => handleModal(e)}
                           >
                             Login
-                          </li>
-                          <li
+                          </Link>
+                          <Link
+                            href="/signup"
                             className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
-                            onClick={() => toggleModal(true)}
+                            onClick={(e) => handleModal(e)}
                           >
                             Sign Up
-                          </li>
+                          </Link>
                         </ul>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />

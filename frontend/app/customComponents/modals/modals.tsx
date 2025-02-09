@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
 import { XIcon } from "lucide-react";
-import { useModalContext } from "@/app/utils/context";
+import { useModalContext } from "@/app/utilities/context";
 
 const Modals = () => {
   const { content, closeModal, isOpen, title } = useModalContext();
