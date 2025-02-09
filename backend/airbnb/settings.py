@@ -170,7 +170,7 @@ EMAIL_TIMEOUT = 300
 DEFAULT_FROM_EMAIL = config("MAIL_USER")
 
 # WSGI_APPLICATION = 'airbnb.wsgi.application'
-ASGI_APPLICATION = 'airbnb.asgi:application'
+ASGI_APPLICATION = 'airbnb.asgi.application'
 
 # Channel Layers
 CHANNEL_LAYERS = {
