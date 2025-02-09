@@ -62,7 +62,7 @@ class GetBankingDetailsView(RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         """ get the user's banking details object """
-        return BankingDetails.objects.get(id=self.kwargs.get('id'))
+        return BankingDetails.objects.get(id=self.kwargs.get('id'), user=self.request.user)
 
     def retrieve(self, request, *args, **kwargs):
         bank_details = self.get_object()

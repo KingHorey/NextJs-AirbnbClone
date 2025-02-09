@@ -13,8 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
     preferences = UpdatePreferencesSerializer()
     class Meta:
         model = User
-        fields = "__all__"
-        # exclude = ["password"]
+        # fields = "__all__"
+        exclude = ["password"]
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
