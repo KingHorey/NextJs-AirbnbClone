@@ -25,10 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENCRYPT_KEY = config("FERNET_ENCRYPT_KEY")
 
-LANGUAGE_CODE = 'es-es'
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
 
 LANGUAGES = [
     ('en', _('English')),
@@ -63,7 +59,7 @@ SECRET_KEY = 'django-insecure-6kp53x3l*dg=&4jwfg=3b&n%jb%#8-ui4y#t=(!p9c@4*+9li)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 #
 REST_FRAMEWORK = {
