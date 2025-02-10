@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
 import { XIcon } from "lucide-react";
-import { useModalContext } from "@/app/utilities/context";
+import { useModalContext } from "@/context/context";
 
 const Modals = () => {
   const { content, closeModal, isOpen, title } = useModalContext();
@@ -30,7 +30,7 @@ const Modals = () => {
           animate={{ scale: 1 }}
           exit={{ scale: 0 }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="fixed inset-0 flex items-center justify-center z-[9999999] backdrop-blur-xs"
+          className="fixed inset-0 flex items-center justify-center z-[9999999]"
           onClick={handleOutsideClick}
         >
           <motion.div

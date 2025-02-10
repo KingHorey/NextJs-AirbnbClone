@@ -56,6 +56,7 @@ class Properties(models.Model):
 
 
 class PropertyImages(models.Model):
+    category = models.CharField(max_length=255, null=True, blank=True)
     user_property = models.ForeignKey(Properties, on_delete=models.CASCADE, related_name='images', help_text='Add images of your property')
     _image = models.ImageField(upload_to='images/properties/', null=True, blank=True)
 

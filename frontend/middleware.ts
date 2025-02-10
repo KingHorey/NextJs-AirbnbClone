@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
-import { handleTokenRefresh } from "./app/utilities/handleTokenRefresh";
+import { handleTokenRefresh } from "./utilities/handleTokenRefresh";
+import { ENV } from "@/config/env";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -19,8 +20,8 @@ export async function middleware(request: NextRequest) {
   const isPublicPath = publicPath.includes(path);
   const isProtectedPath = protectedPaths.includes(path);
 
-  const accessToken = request.cookies.get("accessToken")?.value;
-  const refreshToken = request.cookies.get("refreshToken")?.value;
+  const accessToken = request.cookies.get(ENV.ACCESS_TOKEN)?.value;
+  const refreshToken = request.cookies.get(ENV.REFRESH_TOKEN)?.value;
 
   // 🌟 1. If user has NO access token but has refresh token → Refresh it
   if (!accessToken && refreshToken) {

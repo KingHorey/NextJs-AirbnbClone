@@ -9,6 +9,8 @@ from .serializers import PropertiesListSerializer, PropertyDetailSerializer, Cre
 
 from services.cache_wrapper import CacheWrapper
 
+from asgiref.sync import sync_to_async
+
 cache = CacheWrapper()
 
 
@@ -29,22 +31,27 @@ class GetAllProperties(ListAPIView):
 
 	def list(self, request, *args, **kwargs) -> Response:
 		""" list/get request to get all properties """
-		params = request.query_params.get('q', None)
+		print(self.request.user)
+		params = request.query_params.get('q', "")
 		page = request.query_params.get('page', 1)
 		key = f"{params}_{page}"
-		if params is None:
-			return Response({'data': 'Please provide a param to search '
-									 'for'}, status=status.HTTP_400_BAD_REQUEST)
+		data = ""
+		# if params is None:
+		# 	return Response({'data': 'Please provide a param to search '
+		# 							 'for'}, status=status.HTTP_400_BAD_REQUEST)
 		cache_hit = cache.get(key)
 		if cache_hit:
-			return Response({'data': cache_hit}, status=status.HTTP_200_OK)
-		data = self.get_queryset().filter(categories__iexact=params.lower()).order_by('created_at').all()
+			return Response(cache_hit, status=status.HTTP_200_OK)
+		if params:
+			data =  self.get_queryset().filter(categories__iexact=params.lower()).order_by('created_at').all()
+		else:
+			data = self.get_queryset().order_by('created_at').all()
 		if data:
 			serializer = self.get_serializer(data, many=True)
 			cache.set(f"{params}_{page}", serializer.data)
-			return Response({
-				'data': serializer.data
-			}, status=status.HTTP_200_OK)
+			return Response(
+				serializer.data
+			, status=status.HTTP_200_OK)
 		else:
 			return Response({
 				'data': 'No instance',

@@ -52,6 +52,8 @@ class PropertiesListSerializer(serializers.ModelSerializer):
         """
         user = self.context.get('request').user
         if user.is_authenticated:
+            obj.favorited_by.filter(user=user).exists()
+            print(user)
             return obj.favorited_by.filter(user=user).exists()
         return False
 

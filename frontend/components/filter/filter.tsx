@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, lazy } from "react";
-import { filterSchema } from "@/lib/definitions";
+import { filterSchema } from "@/types/filtering";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -31,14 +31,14 @@ import { ThreeDots } from "react-loader-spinner";
 
 const ClothDryer = lazy(
   () =>
-    import("@/app/assets/svg/dryer.svg") as Promise<{
+    import("@/assets/svg/dryer.svg") as Promise<{
       default: React.FC<React.SVGProps<SVGSVGElement>>;
     }>
 );
-const Kitchen = lazy(() => import("@/app/assets/svg/kitchen.svg"));
-const Workspace = lazy(() => import("@/app/assets/svg/workspace.svg"));
-const HairDryer = lazy(() => import("@/app/assets/svg/hairDryer.svg"));
-const PressingIron = lazy(() => import("@/app/assets/svg/pressingIron.svg"));
+const Kitchen = lazy(() => import("@/assets/svg/kitchen.svg"));
+const Workspace = lazy(() => import("@/assets/svg/workspace.svg"));
+const HairDryer = lazy(() => import("@/assets/svg/hairDryer.svg"));
+const PressingIron = lazy(() => import("@/assets/svg/pressingIron.svg"));
 
 const amenitiesList = [
   {

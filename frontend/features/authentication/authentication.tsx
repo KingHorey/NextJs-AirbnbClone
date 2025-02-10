@@ -12,40 +12,54 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { useCustomForm } from "@/app/utilities/customForm";
-import { authSchema } from "@/lib/definitions";
-
 import z from "zod";
-import { reqFlow } from "@/app/utilities/api/axiosInstance";
 
 import { EyeClosedIcon, EyeIcon } from "lucide-react";
-import { handleLoginToken } from "@/app/utilities/utils";
 
 import { toast } from "react-toastify";
+import { authSchema } from "@/types/registration";
+
+import { authService } from "@/services/authService";
+import { useCustomForm } from "@/types/custom_form";
+
+import { useModalContext } from "@/context/context";
+
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+
+import { loginUser } from "@/store/reducers/userInfo/userReducer";
+import { useDispatch } from "react-redux";
 /* might be needed for future implementation
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 */
 
 const Authentication = () => {
+  const dispatch = useDispatch();
+  const { closeModal } = useModalContext();
+  const pathname = usePathname();
   const router = useRouter();
   const [revealPassword, setRevealPassword] = useState<boolean>(false);
 
   const form = useCustomForm(authSchema, { email: "", password: "" });
 
   async function handleSubmit(e: z.infer<typeof authSchema>) {
-    const { status, data } = await reqFlow("/token/", "POST", e);
+    const [status, data, user] = await authService.login(e);
+
     if (status !== 200) {
-      console.log(status, data);
       toast.error(data.detail);
       return;
     }
-    handleLoginToken(data);
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 3000);
+
+    dispatch(loginUser(user));
     toast.success("Successfully logged in");
+
+    if (pathname === "/login" || pathname === "/signup") {
+      router.push("/");
+    } else {
+      closeModal();
+      router.refresh();
+    }
   }
 
   return (
@@ -75,10 +89,10 @@ const Authentication = () => {
                   <Input
                     {...field}
                     type={revealPassword ? "text" : "password"}
-                    className="p-5 text-black text-base font-semibold w-full rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                    className="p-5 text-black text-base font-semibold w-full rounded-lg focus:border-blue-500 relative focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                   />
                 </FormControl>
-                <div className="absolute top-9 right-2 z-50">
+                <div className="absolute top-[12px] z-50 h-fit w-fit">
                   {!revealPassword ? (
                     <EyeClosedIcon
                       size={20}
@@ -93,7 +107,7 @@ const Authentication = () => {
                       onClick={() => {
                         setRevealPassword(false);
                       }}
-                      className="cursor-pointer "
+                      className="cursor-pointer"
                     />
                   )}
                 </div>

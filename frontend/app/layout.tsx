@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { manRope } from "./utilities/font";
+import { manRope } from "../utilities/font";
 import "./globals.css";
 import Navbar from "./ui/navbar";
 import Footer from "./ui/footer";
 import ReduxProvider from "../store/provider";
 
-import ModalProvider from "./utilities/context";
+import ModalProvider from "../context/context";
 import Modals from "../components/modals/modals";
 import NextQueryProvider from "./queryclient";
 
 import { ToastContainer } from "react-toastify";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const metadata: Metadata = {
   title: {
@@ -38,6 +39,7 @@ export default function RootLayout({
               <Footer />
               <Modals />
               <ToastContainer />
+              <ReactQueryDevtools />
             </NextQueryProvider>
           </body>
         </ModalProvider>

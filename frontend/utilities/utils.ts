@@ -3,15 +3,20 @@
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 
-import { JWTPayload } from "@/lib/definitions";
 import { revalidatePath } from "next/cache";
+import { JWTPayload } from "@/types/custom_jwt";
+import { ENV } from "@/config/env";
 
-export const handleLoginToken = async (x) => {
+export const handleLoginToken = async (x: {
+  access: string;
+  refresh: string;
+}) => {
   const cookieStore = await cookies();
   const { access, refresh } = x;
 
-  const accessToken = process.env.NEXT_ACCESS_TOKEN || "access_token";
-  const refreshToken = process.env.NEXT_REFRESH_TOKEN || "refresh_token";
+  const accessToken = ENV.ACCESS_TOKEN || "access_token";
+  const refreshToken = ENV.REFRESH_TOKEN || "refresh_token";
+
   cookieStore.set(accessToken, access, {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -58,6 +63,8 @@ export const handleLoginToken = async (x) => {
     sameSite: "strict",
     maxAge: 60 * 60 * 24 * 7,
   });
+
+  return user;
 };
 
 export const handlePathRevalidation = async (path: string) => {
