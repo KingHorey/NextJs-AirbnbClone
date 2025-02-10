@@ -2,6 +2,7 @@ import React from "react";
 import { HeartIcon, ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
 const Properties = () => {
   return (
     <div className="rounded-md lg:h-[430px] w-full space-y-5 flex flex-col group">

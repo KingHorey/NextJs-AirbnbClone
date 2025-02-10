@@ -21,7 +21,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Menu } from "lucide-react";
-import NavSearch from "../customComponents/bookingFilter/nav-search";
+import NavSearch from "../../components/bookingFilter/nav-search";
 import Shortnavbar from "./short-navbar";
 import Authentication from "./authentication/authentication";
 

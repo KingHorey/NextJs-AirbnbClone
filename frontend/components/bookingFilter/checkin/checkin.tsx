@@ -13,12 +13,12 @@ import {
 import { UseFormReturn } from "react-hook-form";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 import { DayPicker, DateRange } from "react-day-picker";
-import { RootState } from "@/app/redux/store";
+import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addCheckIn,
   addCheckOut,
-} from "@/app/redux/reducers/bookingFilterReducer/bookingFilterReducer";
+} from "@/store/reducers/bookingFilterReducer/bookingFilterReducer";
 
 const CheckIn = ({ form }: { form: UseFormReturn }) => {
   const [open, setOpen] = useState(false);

@@ -6,6 +6,8 @@ import TaxFiltering from "./ui/tax-filtering";
 import PropertyList from "./ui/properties/property-list";
 import Properties from "./ui/properties/properties";
 
+import { Suspense } from "react";
+
 export default function Home() {
   return (
     <main className=" max-w-[150rem]  ">
@@ -14,37 +16,9 @@ export default function Home() {
         <Filters />
         <TaxFiltering />
       </div>
-
-      <PropertyList>
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-      </PropertyList>
+      <Suspense>
+        <PropertyList></PropertyList>
+      </Suspense>
     </main>
   );
 }

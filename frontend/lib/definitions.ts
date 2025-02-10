@@ -1,4 +1,3 @@
-import { Amethysta } from "next/font/google";
 import { z } from "zod";
 
 export const destinationSchema = z.object({
@@ -31,42 +30,3 @@ export const searchSchema = z.union([
   searchSchemaWithCheckIn,
   searchSchemaWithDate,
 ]);
-
-export const authSchema = z.object({
-  // country_code: z.string(),
-  // phone_number: z.string().refine((v) => /^\d{10,15}$/.test(v), {
-  //   message: "Phone number must be numeric and between 10 to 15 digits.",
-  // }),
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
-});
-
-export const filterSchema = z.object({
-  rooms: z.number().optional(),
-  guests: z.number().optional(),
-  bedrooms: z.number().optional(),
-  beds: z.number().optional(),
-  price: z.object({
-    min: z.number().optional(),
-    max: z.number().optional(),
-  }),
-  rating: z.number().optional(),
-  type: z.enum(["entire", "private", "shared"]).optional(),
-  amenities: z.array(z.string()).optional(),
-  location: z.string().optional(),
-  booking_type: z.enum(["instant", "request"]).optional(),
-});
-
-export interface JWTPayload {
-  user_id: string;
-  email: string;
-  exp: number;
-  iat: number;
-  language: string;
-  currency: string;
-  timezone: string;
-  full_name: string;
-  jti: string;
-}

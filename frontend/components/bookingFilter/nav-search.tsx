@@ -16,7 +16,7 @@ import { SearchIcon, User2Icon } from "lucide-react";
 
 import "react-day-picker/style.css";
 
-import { searchSchema } from "../../../lib/definitions";
+import { searchSchema } from "../../lib/definitions";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,7 +25,7 @@ import CheckIn from "./checkin/checkin";
 import CheckOut from "./chckout/checkout";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../store/store";
 import { Button } from "@/components/ui/button";
 
 const NavSearch = ({ type }: { type: string }) => {

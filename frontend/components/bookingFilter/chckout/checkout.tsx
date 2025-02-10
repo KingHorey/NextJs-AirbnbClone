@@ -20,8 +20,8 @@ import { DayPicker, DateRange } from "react-day-picker";
 import {
   addCheckIn,
   addCheckOut,
-} from "@/app/redux/reducers/bookingFilterReducer/bookingFilterReducer";
-import { RootState } from "@/app/redux/store";
+} from "@/store/reducers/bookingFilterReducer/bookingFilterReducer";
+import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 
 const CheckOut = ({ form }: { form: UseFormReturn }) => {

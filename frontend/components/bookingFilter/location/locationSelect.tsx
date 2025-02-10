@@ -17,9 +17,9 @@ import { CustomDropDownLabel } from "../customDropdownTrigger"; // Ensure the na
 import Trigger from "../customDropdownTrigger";
 
 import { useDispatch } from "react-redux";
-import { addDestination } from "@/app/redux/reducers/bookingFilterReducer/bookingFilterReducer";
+import { addDestination } from "@/store/reducers/bookingFilterReducer/bookingFilterReducer";
 import { useSelector } from "react-redux";
-import { RootState } from "@/app/redux/store";
+import { RootState } from "@/store/store";
 
 const LocationSelect = ({ form }: { form: UseFormReturn }) => {
   const [open, setOpen] = useState(false);
