@@ -1,15 +1,42 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { HeartIcon, ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-const Properties = () => {
+import { StarIcon } from "lucide-react";
+
+const Properties = ({
+  images,
+  rating,
+  bookmarked,
+  id,
+  location,
+  price_per_night,
+}: {
+  images: string[];
+  rating: number;
+  bookmarked: boolean;
+  id: string;
+  location: string;
+
+  price_per_night: string;
+}) => {
+  const [image, setImages] = useState<string[]>(images);
+
+  const switchImages = () => {
+    // handle image switching
+  };
   return (
-    <div className="rounded-md lg:h-[430px] w-full space-y-5 flex flex-col group">
+    <Link
+      href={`/rooms/${id}`}
+      className="rounded-md lg:h-[430px] w-full space-y-5 flex flex-col group"
+    >
       <div className="h-[270px] relative">
         <HeartIcon
           className="top-5 right-3 absolute cursor-pointer hover:scale-125 transition-all"
           stroke="white"
-          fill="gray"
+          fill={bookmarked ? "red" : "gray"}
           size={25}
         />
         <Image
@@ -27,15 +54,18 @@ const Properties = () => {
         </div>
       </div>
 
-      <Link href="#" className="select-none">
+      <div className="select-none space-y-3 font-normal text-sm">
         <div className="flex justify-between">
-          <h2 className="font-semibold">Aso Rock, Abuja</h2>
+          <h2 className="font-semibold">{location}</h2>
+          <div className="flex items-center gap-1">
+            <StarIcon size={16} fill="black" />
+            <span>{rating}</span>
+          </div>
         </div>
         <p>Added 9 weeks ago</p>
-        <p>Feb 19-24</p>
-        <p>$ 300 per night</p>
-      </Link>
-    </div>
+        <p>{price_per_night} night</p>
+      </div>
+    </Link>
   );
 };
 

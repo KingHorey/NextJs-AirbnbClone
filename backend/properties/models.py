@@ -52,3 +52,23 @@ class Properties(models.Model):
         verbose_name = "property"
         verbose_name_plural = "properties"
         ordering = ["name"]
+
+
+
+class PropertyImages(models.Model):
+    category = models.CharField(max_length=255, null=True, blank=True)
+    user_property = models.ForeignKey(Properties, on_delete=models.CASCADE, related_name='images', help_text='Add images of your property')
+    _image = models.ImageField(upload_to='images/properties/', null=True, blank=True)
+
+
+    def __str__(self):
+        return f"{self._image} for {self.property.name}"
+
+
+    @property
+    def image(self):
+        return f"/media/{self._image}"
+
+    @image.setter
+    def image(self, value):
+        self._image = value

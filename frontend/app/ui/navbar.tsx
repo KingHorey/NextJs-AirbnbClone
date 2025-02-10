@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AirBnbLogo from "./logo";
 import Link from "next/link";
-import { motion, useInView, useScroll } from "framer-motion";
-import { GlobeIcon, Scale } from "lucide-react";
+import { motion } from "framer-motion";
+import { GlobeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // custom user context
-import { useModalContext } from "@/app/utilities/context";
+import { useModalContext } from "@/context/context";
 
 import {
   DropdownMenu,
@@ -21,11 +21,15 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Menu } from "lucide-react";
-import NavSearch from "../customComponents/bookingFilter/nav-search";
+import NavSearch from "../../components/bookingFilter/nav-search";
 import Shortnavbar from "./short-navbar";
-import Authentication from "./authentication/authentication";
+import Authentication from "../../features/authentication/authentication";
+
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const Navbar = () => {
+  const selector = useSelector((state: RootState) => state.userAuth);
   const [filters, setFilters] = useState<string>("stays");
   const pathname = usePathname();
 
@@ -133,24 +137,26 @@ const Navbar = () => {
                     </Avatar>
                     <DropdownMenuContent className="z-[9999999]  p-0  absolute left-[-13.5rem]  rounded-lg ">
                       <DropdownMenuGroup>
-                        <ul className="flex flex-col space-y-3">
-                          <Link
-                            href="/login"
-                            className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
-                            onClick={(e) => handleModal(e)}
-                          >
-                            Login
-                          </Link>
-                          <Link
-                            href="/signup"
-                            className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
-                            onClick={(e) => {
-                              handleModal(e);
-                            }}
-                          >
-                            Sign Up
-                          </Link>
-                        </ul>
+                        {!selector.loggedIn && (
+                          <ul className="flex flex-col space-y-3">
+                            <Link
+                              href="/login"
+                              className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
+                              onClick={(e) => handleModal(e)}
+                            >
+                              Login
+                            </Link>
+                            <Link
+                              href="/signup"
+                              className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
+                              onClick={(e) => {
+                                handleModal(e);
+                              }}
+                            >
+                              Sign Up
+                            </Link>
+                          </ul>
+                        )}
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup className="flex flex-col space-y-3">

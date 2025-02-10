@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { manRope } from "./utilities/font";
+import { manRope } from "../utilities/font";
 import "./globals.css";
 import Navbar from "./ui/navbar";
 import Footer from "./ui/footer";
-import ReduxProvider from "./redux/provider";
+import ReduxProvider from "../store/provider";
 
-import ModalProvider from "./utilities/context";
-import Modals from "./customComponents/modals/modals";
+import ModalProvider from "../context/context";
+import Modals from "../components/modals/modals";
+import NextQueryProvider from "./queryclient";
 
 import { ToastContainer } from "react-toastify";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const metadata: Metadata = {
   title: {
@@ -28,14 +30,17 @@ export default function RootLayout({
       <ReduxProvider>
         <ModalProvider>
           <body className={`${manRope.className}   text-black antialiased    `}>
-            <div className={`max-w-[150rem] mx-auto px-6  `}>
-              <Navbar />
-              {children}
-            </div>
+            <NextQueryProvider>
+              <div className={`max-w-[150rem] mx-auto px-6  `}>
+                <Navbar />
+                {children}
+              </div>
 
-            <Footer />
-            <Modals />
-            <ToastContainer />
+              <Footer />
+              <Modals />
+              <ToastContainer />
+              <ReactQueryDevtools />
+            </NextQueryProvider>
           </body>
         </ModalProvider>
       </ReduxProvider>
