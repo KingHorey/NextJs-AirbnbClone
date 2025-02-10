@@ -1,15 +1,26 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView, \
-	RetrieveUpdateDestroyAPIView, get_object_or_404
+	RetrieveUpdateDestroyAPIView, get_object_or_404, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Properties
-from .serializers import PropertiesListSerializer, PropertyDetailSerializer
+from .serializers import PropertiesListSerializer, PropertyDetailSerializer, CreatePropertySerializer
 
 from services.cache_wrapper import CacheWrapper
 
 cache = CacheWrapper()
+
+
+class CreatePropertyView(CreateAPIView):
+    """ class to create a property """
+    queryset = Properties.objects.all()
+    serializer_class = CreatePropertySerializer
+    permission_classes = [IsAuthenticated]
+
+    # def create(self, request, *args, **kwargs):
+    #     return super().create(request, *args, **kwargs)
+
 
 class GetAllProperties(ListAPIView):
 	""" class to get the list of properties - homepage"""
@@ -144,3 +155,7 @@ class PropertyActionView(RetrieveUpdateDestroyAPIView):
 		property_instance.delete()
 		return Response({'data': 'Property deleted successfully'},
 						status=status.HTTP_204_NO_CONTENT)
+
+
+
+

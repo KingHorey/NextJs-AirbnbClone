@@ -2,7 +2,7 @@
 *.pyc
 virtualenv/**/
 ./backend/venv/**
-/backend/db.sqlite3
+./backend/db.sqlite3
 venv/
 
 __pycache__/

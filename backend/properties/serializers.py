@@ -8,6 +8,15 @@ from properties.models import Properties
 from reviews.serializers import ReviewSerializer
 from user.serializers import UserSerializer
 
+class CreatePropertySerializer(serializers.ModelSerializer):
+    images = serializers.ListField(
+        child=serializers.ImageField(max_length=None, allow_empty_file=False, use_url=True)
+    )
+
+    class Meta:
+        model = Properties
+        fields = "__all__"
+
 
 class PropertiesListSerializer(serializers.ModelSerializer):
     """ class to show the properties as a summary, ideal for the homepage or search results """
