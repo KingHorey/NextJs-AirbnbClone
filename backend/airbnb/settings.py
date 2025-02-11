@@ -129,12 +129,12 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'middleware.CustomLocaleMiddleware.CustomLocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'middleware.CustomLocaleMiddleware.CustomLocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

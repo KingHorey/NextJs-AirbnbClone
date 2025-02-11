@@ -62,8 +62,11 @@ class PropertyImages(models.Model):
 
 
     def __str__(self):
-        return f"{self._image} for {self.property.name}"
+        return f"{self._image} for {self.user_property.name}"
 
+    class Meta:
+        verbose_name = "Property Image"
+        verbose_name_plural = "Property Images"
 
     @property
     def image(self):

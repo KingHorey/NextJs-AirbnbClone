@@ -23,10 +23,11 @@ class PropertiesListSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
     rating = serializers.SerializerMethodField()
     bookmarked = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
 
     class Meta:
         model = Properties
-        fields = ["id", "address", "price_per_night", "rating", "bookmarked"]
+        fields = ["id", "address", "price_per_night", "rating", "bookmarked", "images"]
 
     def get_rating(self, obj: 'Properties') -> int:
         """
@@ -42,6 +43,17 @@ class PropertiesListSerializer(serializers.ModelSerializer):
         average_rating = sum(
             (reviews.rating for reviews in reviews)) / number_of_reviews
         return round(average_rating, 2)
+
+    def get_images(self, obj: 'Properties') -> list:
+        """_summary_
+
+        Args:
+            obj (Properties): _description_
+
+        Returns:
+            list: _description_
+        """
+        return [i.image for i in obj.images.all()]
 
     def get_bookmarked(self, obj: 'Properties') -> bool:
         """
