@@ -27,6 +27,7 @@ import { useModalContext } from "@/context/context";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { loginUser } from "@/store/reducers/userInfo/userReducer";
 import { useDispatch } from "react-redux";
 /* might be needed for future implementation
@@ -38,6 +39,7 @@ const Authentication = () => {
   const dispatch = useDispatch();
   const { closeModal } = useModalContext();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [revealPassword, setRevealPassword] = useState<boolean>(false);
 
@@ -50,9 +52,10 @@ const Authentication = () => {
       toast.error(data.detail);
       return;
     }
-
-    dispatch(loginUser(user));
     toast.success("Successfully logged in");
+    console.log(user);
+    dispatch(loginUser(user));
+    queryClient.invalidateQueries({ queryKey: ["listings"] });
 
     if (pathname === "/login" || pathname === "/signup") {
       router.push("/");

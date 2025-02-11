@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import AirBnbLogo from "./logo";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { GlobeIcon } from "lucide-react";
+import { DoorClosedIcon, GlobeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // custom user context
@@ -26,10 +26,38 @@ import Shortnavbar from "./short-navbar";
 import Authentication from "../../features/authentication/authentication";
 
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "@/store/reducers/userInfo/userReducer";
 import { RootState } from "@/store/store";
+import { handleLogout } from "@/utilities/utils";
+
+import { useQueryClient } from "@tanstack/react-query";
+
+const LoggedInLinks = [
+  {
+    link: "/guest/inbox",
+    name: "Messages",
+  },
+  {
+    link: "/notifications",
+    name: "Notifications",
+  },
+  {
+    link: "trips/v1",
+    name: "Trips",
+  },
+  {
+    link: "wishlists",
+    name: "Wishlists",
+  },
+];
 
 const Navbar = () => {
   const selector = useSelector((state: RootState) => state.userAuth);
+  const dispatch = useDispatch();
+
+  const queryClient = useQueryClient();
+
   const [filters, setFilters] = useState<string>("stays");
   const pathname = usePathname();
 
@@ -55,6 +83,14 @@ const Navbar = () => {
     if (pathname.includes("/login") || pathname.includes("/signup")) return;
     e.preventDefault();
     openModal(<Authentication />, "Login or Sign up");
+  }
+
+  async function logout() {
+    const value = await handleLogout();
+    if (value) {
+      dispatch(logoutUser());
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+    }
   }
 
   return (
@@ -135,9 +171,9 @@ const Navbar = () => {
                         O
                       </AvatarFallback>
                     </Avatar>
-                    <DropdownMenuContent className="z-[9999999]  p-0  absolute left-[-13.5rem]  rounded-lg ">
+                    <DropdownMenuContent className="z-[9999999]  p-2  absolute left-[-13.5rem]  rounded-lg ">
                       <DropdownMenuGroup>
-                        {!selector.loggedIn && (
+                        {!selector.loggedIn ? (
                           <ul className="flex flex-col space-y-3">
                             <Link
                               href="/login"
@@ -155,6 +191,18 @@ const Navbar = () => {
                             >
                               Sign Up
                             </Link>
+                          </ul>
+                        ) : (
+                          <ul className="flex flex-col space-y-1">
+                            {LoggedInLinks.map((link, index: number) => (
+                              <Link
+                                href={link.link}
+                                key={index}
+                                className="hover:bg-gray-300/10 duration-100 transition-all font-bold  p-2 text-sm cursor-pointer"
+                              >
+                                {link.name}
+                              </Link>
+                            ))}
                           </ul>
                         )}
                       </DropdownMenuGroup>
@@ -184,6 +232,14 @@ const Navbar = () => {
                         >
                           Help
                         </Link>
+                        {selector.loggedIn && (
+                          <div
+                            onClick={logout}
+                            className="text-red mt-2 duration-100 transition-all w-full p-2 font-normal hover:font-bold  text-sm cursor-pointer"
+                          >
+                            Logout
+                          </div>
+                        )}
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenuLabel>

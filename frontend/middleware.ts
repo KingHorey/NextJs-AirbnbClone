@@ -43,6 +43,7 @@ export async function middleware(request: NextRequest) {
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (decodedToken.exp && decodedToken.exp < currentTime - 1000) {
+        console.log("fetching access token, since it's almost expired");
         if (refreshToken) {
           const response = await handleTokenRefresh(refreshToken);
           if (response.status === 200) {

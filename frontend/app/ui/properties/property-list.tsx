@@ -14,7 +14,7 @@ import Properties from "./properties";
 
 const PropertyList = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ["properties"],
+    queryKey: ["listings"],
     queryFn: () => reqFlow(endpoints.properties.ALL_PROPERTIES(""), "GET"),
   });
   if (isLoading) {
