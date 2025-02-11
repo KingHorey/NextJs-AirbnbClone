@@ -67,6 +67,18 @@ export const handleLoginToken = async (x: {
   return user;
 };
 
+export const handleLogout = async () => {
+  const cookieStore = await cookies();
+  const accessToken = ENV.ACCESS_TOKEN || "access_token";
+  const refreshToken = ENV.REFRESH_TOKEN || "refresh_token";
+
+  cookieStore.delete(accessToken);
+  cookieStore.delete(refreshToken);
+  cookieStore.delete("_user_attributes");
+
+  return true;
+};
+
 export const handlePathRevalidation = async (path: string) => {
   const revalidate = revalidatePath(path);
   return revalidate;
