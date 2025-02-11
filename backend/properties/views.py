@@ -9,7 +9,6 @@ from .serializers import PropertiesListSerializer, PropertyDetailSerializer, Cre
 
 from services.cache_wrapper import CacheWrapper
 
-from asgiref.sync import sync_to_async
 
 cache = CacheWrapper()
 
@@ -27,14 +26,14 @@ class CreatePropertyView(CreateAPIView):
 class GetAllProperties(ListAPIView):
 	""" class to get the list of properties - homepage"""
 	queryset = Properties.objects.all()
+
 	serializer_class = PropertiesListSerializer
 
 	def list(self, request, *args, **kwargs) -> Response:
 		""" list/get request to get all properties """
-		print(self.request.user)
 		params = request.query_params.get('q', "")
 		page = request.query_params.get('page', 1)
-		key = f"{params}_{page}"
+		key = f"{params}_{page}_{request.user}"
 		data = ""
 		# if params is None:
 		# 	return Response({'data': 'Please provide a param to search '
